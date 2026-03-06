@@ -30,6 +30,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem địa chỉ IP hiện tại',
+            hint: 'ip addr show ; echo "---" ; hostname -I',
+          },
+          {
             type: 'h2',
             text: 'Subnetting and CIDR',
           },
@@ -47,6 +52,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tính subnet',
+            hint: 'ip route show ; ip addr show | grep "inet "'
+          },
+          {
             type: 'h2',
             text: 'IPv6',
           },
@@ -61,6 +71,11 @@ export const topic109: Topic = {
               ['Multicast', 'ff00::/8', 'One-to-many communication'],
               ['Unspecified', '::/128', 'Unknown/unassigned address'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem địa chỉ IPv6',
+            hint: 'ip -6 addr show 2>/dev/null || echo "No IPv6 configured"',
           },
           {
             type: 'h2',
@@ -93,6 +108,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem các cổng đang lắng nghe',
+            hint: 'ss -tuln ; echo "---" ; cat /etc/services | grep -E "^(ssh|http|dns|smtp|ftp) "',
+          },
+          {
             type: 'h2',
             text: 'TCP vs UDP',
           },
@@ -105,6 +125,11 @@ export const topic109: Topic = {
               ['Speed', 'Slower (overhead)', 'Faster (low overhead)'],
               ['Use cases', 'HTTP, SSH, FTP, SMTP, database', 'DNS, NTP, VoIP, streaming, DHCP'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Phân biệt TCP/UDP trên hệ thống',
+            hint: 'ss -tuln | head -20',
           },
           {
             type: 'exam',
@@ -138,6 +163,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem tên network interface',
+            hint: 'ip link show ; ls /sys/class/net/',
+          },
+          {
             type: 'h2',
             text: 'ip Command (iproute2)',
           },
@@ -160,6 +190,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem bảng routing và ARP',
+            hint: 'ip addr show ; echo "---Routing---" ; ip route show ; echo "---ARP---" ; ip neigh show',
+          },
+          {
             type: 'h2',
             text: 'Legacy Network Commands (still on exam)',
           },
@@ -177,6 +212,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Dùng lệnh legacy ifconfig',
+            hint: 'ifconfig 2>/dev/null || ip addr show',
+          },
+          {
             type: 'h2',
             text: 'Persistent Configuration Files',
           },
@@ -192,6 +232,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem file cấu hình mạng',
+            hint: 'cat /etc/network/interfaces 2>/dev/null || ls /etc/netplan/ 2>/dev/null || ls /etc/NetworkManager/system-connections/ 2>/dev/null',
+          },
+          {
             type: 'code',
             text: '# /etc/network/interfaces (Debian static IP)\nauto eth0\niface eth0 inet static\n    address 192.168.1.100\n    netmask 255.255.255.0\n    gateway 192.168.1.1\n    dns-nameservers 8.8.8.8 8.8.4.4\n\n# DHCP:\nauto eth0\niface eth0 inet dhcp\n\n# Bring up/down interface:\nifup eth0\nifdown eth0\n\n# /etc/sysconfig/network-scripts/ifcfg-eth0 (RHEL)\nTYPE=Ethernet\nBOOTPROTO=none\nIPADDR=192.168.1.100\nPREFIX=24\nGATEWAY=192.168.1.1\nDNS1=8.8.8.8\nONBOOT=yes\n\n# Restart networking:\nsystemctl restart network     # RHEL 7\nnmcli con reload              # RHEL 8+\nnetplan apply                 # Ubuntu Netplan',
           },
@@ -204,12 +249,22 @@ export const topic109: Topic = {
             text: '# Show hostname\nhostname\nhostnamectl\n\n# Set hostname permanently\nhostnamectl set-hostname myserver.example.com\n\n# Hostname types in systemd:\n# Static:  permanent, stored in /etc/hostname\n# Pretty:  human-friendly display name (may contain spaces)\n# Transient: temporary, from DHCP or kernel default\n\n# /etc/hostname — contains just the hostname\ncat /etc/hostname\n\n# /etc/hosts — local DNS override\ncat /etc/hosts\n# 127.0.0.1   localhost\n# 192.168.1.100   myserver.example.com   myserver',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem hostname và file hosts',
+            hint: 'hostname ; hostname -f 2>/dev/null ; cat /etc/hostname ; cat /etc/hosts | head -10',
+          },
+          {
             type: 'h2',
             text: 'nmcli — NetworkManager Command Line',
           },
           {
             type: 'code',
             text: '# nmcli — manage NetworkManager connections from CLI\n# Used on RHEL/CentOS 8+, Ubuntu, Fedora, etc.\n\n# Show device status\nnmcli device status\nnmcli dev\n\n# Show all connections\nnmcli connection show\nnmcli con show\n\n# Show details of a specific connection\nnmcli con show "Wired connection 1"\n\n# Bring connection up/down\nnmcli con up "Wired connection 1"\nnmcli con down ens33\n\n# Add a static IP connection\nnmcli con add type ethernet con-name myconn ifname ens33 \\\n    ip4 192.168.1.100/24 gw4 192.168.1.1\nnmcli con mod myconn ipv4.dns "8.8.8.8 8.8.4.4"\nnmcli con up myconn\n\n# Add a DHCP connection\nnmcli con add type ethernet con-name dhcp-eth0 ifname eth0 \\\n    ipv4.method auto\n\n# Modify an existing connection\nnmcli con mod ens33 ipv4.addresses 192.168.1.200/24\nnmcli con mod ens33 ipv4.gateway 192.168.1.1\nnmcli con mod ens33 ipv4.method manual\nnmcli con up ens33   # apply changes\n\n# Reload all connection files from disk\nnmcli con reload\n\n# nmtui — text user interface (menu-driven) for NetworkManager\nnmtui',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem kết nối NetworkManager',
+            hint: 'nmcli device status 2>/dev/null || echo "NetworkManager không có sẵn" ; nmcli con show 2>/dev/null | head -10',
           },
           {
             type: 'exam',
@@ -249,6 +304,11 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra kết nối mạng',
+            hint: 'ping -c 3 8.8.8.8 2>/dev/null | tail -5 ; echo "---" ; ping -c 2 localhost',
+          },
+          {
             type: 'h2',
             text: 'Port and Socket Inspection',
           },
@@ -266,6 +326,11 @@ export const topic109: Topic = {
               ['nc -zvu host port', 'Test UDP port'],
               ['telnet host port', 'Test TCP connectivity (old method)'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra cổng đang mở',
+            hint: 'ss -tulnp 2>/dev/null | head -15 || netstat -tuln 2>/dev/null | head -15',
           },
           {
             type: 'h2',
@@ -286,12 +351,22 @@ export const topic109: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tra cứu DNS',
+            hint: 'dig google.com 2>/dev/null | grep "ANSWER" ; host google.com 2>/dev/null || nslookup google.com',
+          },
+          {
             type: 'h2',
             text: 'Network Interface and ARP',
           },
           {
             type: 'code',
             text: '# Show interface stats (RX/TX bytes, errors, drops)\nip -s link show eth0\nifconfig eth0    # legacy\n\n# ARP cache\nip neigh show\narp -n           # legacy\n\n# Clear ARP entry\narp -d 192.168.1.1\n\n# Find route to host\nip route get 8.8.8.8\n# 8.8.8.8 via 192.168.1.1 dev eth0 src 192.168.1.100\n\n# Check MTU for a path\ntracepath -n google.com\n\n# Capture packets (requires tcpdump/wireshark)\ntcpdump -i eth0 -n port 80\ntcpdump -i eth0 -n host 8.8.8.8\ntcpdump -i eth0 -w /tmp/capture.pcap',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem ARP và route đến host',
+            hint: 'ip neigh show ; echo "---" ; ip route get 8.8.8.8 2>/dev/null',
           },
           {
             type: 'h2',
@@ -310,6 +385,11 @@ export const topic109: Topic = {
               'Test remote service: nc -zv host port',
               'Check firewall rules: iptables -L -n / nft list ruleset',
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Chạy quy trình troubleshooting',
+            hint: 'ip addr show | grep "inet " ; ip route show | grep default ; cat /etc/resolv.conf | grep nameserver',
           },
           {
             type: 'exam',
@@ -334,12 +414,22 @@ export const topic109: Topic = {
             text: '# /etc/resolv.conf — DNS resolver configuration\n# Up to 3 nameservers consulted in order\nnameserver 8.8.8.8          # primary DNS server\nnameserver 8.8.4.4          # secondary DNS server\nnameserver 192.168.1.1      # local DNS (3rd)\n\n# search: append these domains when resolving short names\n# "ping webserver" becomes "ping webserver.example.com"\nsearch example.com corp.example.com\n\n# domain: single search domain (similar to search with one entry)\ndomain example.com\n\n# Options\noptions ndots:5    # names with fewer than 5 dots get search appended\noptions timeout:2  # seconds to wait for DNS response\noptions attempts:3 # retry attempts per nameserver',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình DNS resolver',
+            hint: 'cat /etc/resolv.conf',
+          },
+          {
             type: 'h2',
             text: '/etc/hosts',
           },
           {
             type: 'code',
             text: '# /etc/hosts — static name-to-IP mappings\n# Checked BEFORE DNS (by default, per /etc/nsswitch.conf)\n# Format: IP  canonical-name  [aliases...]\n127.0.0.1       localhost\n127.0.1.1       mypc.localdomain  mypc\n192.168.1.100   server.example.com  server\n10.0.0.5        db1 db1.internal\n::1             localhost ip6-localhost\n\n# Useful for:\n# - Development: override production domain to local\n# - Blocking: map ad domains to 0.0.0.0\n# - Quick workarounds without DNS changes',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem file /etc/hosts',
+            hint: 'cat /etc/hosts ; echo "---" ; getent hosts localhost',
           },
           {
             type: 'h2',
@@ -354,12 +444,22 @@ export const topic109: Topic = {
             text: '# /etc/nsswitch.conf\n# hosts line controls hostname resolution order:\nhosts: files dns myhostname\n# files = /etc/hosts (checked first)\n# dns   = /etc/resolv.conf DNS servers (checked second)\n# myhostname = systemd resolver (knows own hostname even if not in /etc/hosts)\n\n# Other lookups:\npasswd:   files systemd\nshadow:   files\ngroup:    files systemd\nnetworks: files          # /etc/networks\nprotocols: db files      # /etc/protocols\nservices: db files       # /etc/services\n\n# If "dns" comes before "files", DNS is checked first\nhosts: dns files   # queries DNS before /etc/hosts\n\n# [NOTFOUND=return] stops searching if not found in current source\nhosts: files [NOTFOUND=return] dns',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem thứ tự phân giải tên',
+            hint: 'cat /etc/nsswitch.conf | grep "^hosts"',
+          },
+          {
             type: 'h2',
             text: 'systemd-resolved',
           },
           {
             type: 'code',
             text: '# systemd-resolved: stub DNS resolver and cache\n# Listens on 127.0.0.53:53 as a local stub resolver\n\n# Status and active DNS server\nresolvectl status\nresolvectl dns          # show DNS servers used per interface\n\n# Flush DNS cache\nresolvectl flush-caches\n\n# When systemd-resolved is active, /etc/resolv.conf is often a symlink:\nls -la /etc/resolv.conf\n# /etc/resolv.conf -> /run/systemd/resolve/stub-resolv.conf\n# (stub-resolv.conf points to 127.0.0.53)\n\n# Config:\ncat /etc/systemd/resolved.conf',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem trạng thái systemd-resolved',
+            hint: 'resolvectl status 2>/dev/null | head -20 || systemd-resolve --status 2>/dev/null | head -10 ; ls -la /etc/resolv.conf',
           },
           {
             type: 'exam',

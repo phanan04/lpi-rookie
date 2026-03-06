@@ -49,6 +49,11 @@ export const topic103: Topic = {
             text: '# View all environment variables\nenv\nprintenv\n\n# View one variable\necho $HOME\nprintenv HOME\n\n# Set a variable (shell-local)\nMYVAR="hello"\n\n# Export to environment (visible to child processes)\nexport MYVAR="hello"\nexport PATH="$PATH:/opt/myapp/bin"\n\n# Unset a variable\nunset MYVAR\n\n# Run command with temporary env\nMYVAR=test ./myscript',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xuất và kiểm tra biến môi trường',
+            hint: 'export TESTVAR=hello ; printenv TESTVAR',
+          },
+          {
             type: 'h2',
             text: 'Command History',
           },
@@ -67,6 +72,11 @@ export const topic103: Topic = {
               ['HISTFILE', 'File to save history (~/.bash_history)'],
               ['HISTFILESIZE', 'Lines stored in HISTFILE'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem lịch sử lệnh',
+            hint: 'history | tail -10',
           },
           {
             type: 'h2',
@@ -88,6 +98,11 @@ export const topic103: Topic = {
             text: '# type differentiates between builtins, aliases, and executables\ntype cd        # cd is a shell builtin\ntype ls        # ls is aliased to `ls --color=auto`\ntype /bin/ls   # /bin/ls is /bin/ls\n\n# Source a file into current shell (execute in current context)\nsource ~/.bashrc\n. ~/.bashrc       # Same thing (dot command)',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xác định loại lệnh',
+            hint: 'type cd ; type ls ; which bash',
+          },
+          {
             type: 'h2',
             text: 'Quoting',
           },
@@ -100,6 +115,11 @@ export const topic103: Topic = {
               ['\\backslash', 'Escapes the next single character'],
               ['$(cmd) or `cmd`', 'Command substitution — replaces with command output'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra quoting',
+            hint: 'echo "Home is $HOME" ; echo \'Literal $HOME\'',
           },
           {
             type: 'h2',
@@ -131,6 +151,11 @@ export const topic103: Topic = {
           {
             type: 'code',
             text: '# Check if current shell is a login shell\necho $0\n# Login shell: output is  -bash  (leading dash)\n# Non-login: output is  bash\n\n# Source bashrc manually\nsource ~/.bashrc\n. ~/.bashrc   # identical\n\n# Add to PATH permanently in ~/.bashrc\nexport PATH="$PATH:/opt/myapp/bin"\n\n# Create an alias in ~/.bashrc\nalias ll=\'ls -alF\'\nalias grep=\'grep --color=auto\'',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem các file cấu hình shell',
+            hint: 'ls -la ~/.bash* /etc/profile',
           },
           {
             type: 'h2',
@@ -170,6 +195,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tra cứu man pages',
+            hint: 'man -k user | head -10',
+          },
+          {
             type: 'h2',
             text: 'Bash Keyboard Shortcuts',
           },
@@ -200,6 +230,11 @@ export const topic103: Topic = {
             text: '# Create an alias\nalias ll="ls -alF"\nalias grep="grep --color=auto"\nalias rm="rm -i"            # make rm interactive\n\n# List all aliases\nalias\n\n# Remove an alias\nunalias ll\n\n# Alias with arguments - use a function instead:\ngreet() { echo "Hello, $1"; }\n\n# Make aliases permanent: add to ~/.bashrc\n# Aliases are NOT inherited by subshells or scripts (only interactive shells)',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê tất cả alias hiện tại',
+            hint: 'alias',
+          },
+          {
             type: 'h2',
             text: 'Shell Variables — set and unset',
           },
@@ -218,6 +253,11 @@ export const topic103: Topic = {
               ['unset VAR', 'Remove a variable entirely'],
               ['readonly VAR=val', 'Set a variable that cannot be changed'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem tất cả biến shell',
+            hint: 'set | head -20',
           },
           {
             type: 'h2',
@@ -258,6 +298,11 @@ export const topic103: Topic = {
               ['~', 'HOME directory of current user'],
               ['~alice', 'HOME directory of user alice'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Thử globbing patterns',
+            hint: 'ls /etc/*.conf | head -5',
           },
           {
             type: 'exam',
@@ -301,6 +346,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Đếm dòng, từ và byte',
+            hint: 'wc -lwc /etc/passwd',
+          },
+          {
             type: 'h2',
             text: 'grep — Search Text',
           },
@@ -322,6 +372,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm kiếm văn bản với grep',
+            hint: 'grep -n root /etc/passwd',
+          },
+          {
             type: 'h2',
             text: 'sed — Stream Editor',
           },
@@ -340,6 +395,11 @@ export const topic103: Topic = {
               ['sed \'$d\' file', 'Delete last line'],
               ['sed \'s/^/  /\' file', 'Indent every line by 2 spaces'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Dùng sed thay thế văn bản',
+            hint: 'echo "hello world" | sed \'s/world/Linux/\'',
           },
           {
             type: 'h2',
@@ -366,6 +426,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Dùng awk xử lý /etc/passwd',
+            hint: 'awk -F: \'{print $1, $3}\' /etc/passwd | head -5',
+          },
+          {
             type: 'h2',
             text: 'tr — Translate Characters',
           },
@@ -382,8 +447,18 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Chuyển chữ thường sang hoa',
+            hint: 'echo "hello linux" | tr a-z A-Z',
+          },
+          {
             type: 'code',
             text: '# Count users in /etc/passwd\nwc -l /etc/passwd\n\n# Extract usernames (field 1, colon-separated)\ncut -d: -f1 /etc/passwd | sort\n\n# Using awk to get username and UID\nawk -F: \'{print $1, $3}\' /etc/passwd\n\n# Find 5 most common words\ncat file.txt | tr -s \'[:space:]\' \'\\n\' | sort | uniq -c | sort -rn | head -5\n\n# Show unique IPs from an access log\ncut -d\' \' -f1 /var/log/nginx/access.log | sort -u\n\n# Replace all tabs with spaces\nexpand -t 4 code.py\n\n# Follow a log file in real time\ntail -f /var/log/syslog\n\n# Count lines/words/bytes in a file\nwc -lwc /etc/passwd\n\n# Split a 100MB file into 10MB chunks\nsplit -b 10M bigfile.tar.gz part_\n# Creates: part_aa, part_ab, part_ac ...\n# Reassemble:\ncat part_* > bigfile.tar.gz\n\n# paste: merge two files side by side\npaste file1.txt file2.txt\npaste -d: file1.txt file2.txt\n\n# od: dump binary/non-printable file content\nod -c /bin/ls | head\nod -x file | head   # hexadecimal dump',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Lấy tất cả username duy nhất',
+            hint: 'cut -d: -f1 /etc/passwd | sort -u',
           },
           {
             type: 'exam',
@@ -420,6 +495,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê file và thư mục chi tiết',
+            hint: 'ls -lah /etc/ | head -15',
+          },
+          {
             type: 'h2',
             text: 'Wildcards (Globbing)',
           },
@@ -436,12 +516,22 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Dùng wildcard tìm file',
+            hint: 'ls /etc/*.conf | wc -l',
+          },
+          {
             type: 'h2',
             text: 'find — Search Files',
           },
           {
             type: 'code',
             text: '# Find by name\nfind /home -name "*.txt"\nfind /home -iname "*.txt"         # case-insensitive\n\n# Find by type\nfind /tmp -type f                  # files only\nfind /tmp -type d                  # directories only\nfind /tmp -type l                  # symbolic links\n\n# Find by size\nfind / -size +100M                 # larger than 100 MB\nfind / -size -10k                  # smaller than 10 KB\n\n# Find by modification time\nfind / -mtime -7                   # modified in last 7 days\nfind / -mmin -60                   # modified in last 60 minutes\n\n# Find by permissions\nfind / -perm 644                   # exact permissions\nfind / -perm /u+s                  # SUID bit set\n\n# Find by owner and execute action\nfind /tmp -user john -exec rm {} \\;\nfind /tmp -user john -exec rm {} +    # Faster: batches arguments',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Tìm file lớn hơn 1MB trong /var',
+            hint: 'find /var -size +1M -type f 2>/dev/null | head -10',
           },
           {
             type: 'h2',
@@ -470,12 +560,22 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tạo và xem nội dung archive',
+            hint: 'tar -czvf /tmp/etc-backup.tar.gz /etc/hosts /etc/passwd ; tar -tvf /tmp/etc-backup.tar.gz',
+          },
+          {
             type: 'h2',
             text: 'dd — Low-Level Copy',
           },
           {
             type: 'code',
             text: '# Backup entire disk to image\ndd if=/dev/sda of=/backup/sda.img bs=4M\n\n# Restore disk from image\ndd if=/backup/sda.img of=/dev/sda bs=4M\n\n# Create a swap file\ndd if=/dev/zero of=/swapfile bs=1M count=2048\n\n# Wipe a partition\ndd if=/dev/urandom of=/dev/sdb1 bs=4M\n\n# Monitor dd progress\ndd if=/dev/sda of=/dev/sdb bs=4M status=progress\n\n# Key options: if=input, of=output, bs=block size, count=number of blocks, skip=skip input blocks, seek=skip output blocks',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Tạo file test với dd',
+            hint: 'dd if=/dev/zero of=/tmp/testfile bs=1M count=1 ; ls -lh /tmp/testfile',
           },
           {
             type: 'h2',
@@ -488,6 +588,11 @@ export const topic103: Topic = {
           {
             type: 'code',
             text: '# Create cpio archive from find output\nfind . -name "*.conf" | cpio -ov > configs.cpio\n\n# Extract cpio archive\ncpio -idv < configs.cpio\n\n# List contents of cpio archive\ncpio -t < archive.cpio\n\n# Options: -o=create, -i=extract, -t=list, -v=verbose, -d=create dirs, -p=pass-through',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Lưu archive các file conf với cpio',
+            hint: 'find /etc -maxdepth 1 -name "*.conf" | cpio -ov > /tmp/etc-confs.cpio ; cpio -t < /tmp/etc-confs.cpio',
           },
           {
             type: 'h2',
@@ -505,6 +610,11 @@ export const topic103: Topic = {
           {
             type: 'code',
             text: '# Show all timestamps for a file\nstat filename\n\n# touch with specific timestamp\ntouch -t 202603061200 filename    # YYYYMMDDhhmm\ntouch -d "2026-03-01 10:00:00" filename\n\n# Set atime and mtime from reference file\ntouch -r reference.file target.file',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin timestamp của file',
+            hint: 'stat /etc/passwd',
           },
           {
             type: 'h2',
@@ -530,12 +640,22 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Nén file và xem thông tin',
+            hint: 'gzip -k /tmp/testfile ; gzip -l /tmp/testfile.gz',
+          },
+          {
             type: 'h2',
             text: 'tar — Advanced Options',
           },
           {
             type: 'code',
             text: '# Exclude files from archive\ntar -czvf backup.tar.gz /home/ --exclude="/home/*/.cache"\ntar -czvf backup.tar.gz /home/ --exclude="*.mp4"\n\n# Preserve permissions and ownership\ntar -czvf backup.tar.gz -p /home/\n\n# Extract to specific directory\ntar -xzvf archive.tar.gz -C /tmp/restore/\n\n# Archive across SSH (no temp file)\ntar -czf - /home/ | ssh user@host "tar -xzf - -C /backup/"\n\n# Append to existing uncompressed archive\ntar -rvf archive.tar newfile.txt\n\n# List with verbose permissions\ntar -tvf archive.tar.gz',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê nội dung archive',
+            hint: 'tar -tvf /tmp/etc-backup.tar.gz',
           },
           {
             type: 'exam',
@@ -570,6 +690,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Hiểu các luồng chuẩn',
+            hint: 'echo "stdout" ; echo "stderr" >&2',
+          },
+          {
             type: 'h2',
             text: 'Redirection Operators',
           },
@@ -590,6 +715,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Redirect output vào file',
+            hint: 'echo "test line" > /tmp/test.txt ; cat /tmp/test.txt',
+          },
+          {
             type: 'h2',
             text: 'Pipes and tee',
           },
@@ -598,12 +728,22 @@ export const topic103: Topic = {
             text: '# Pipe stdout of cmd1 to stdin of cmd2\ncmd1 | cmd2\n\n# tee: write to both file and stdout simultaneously\nls -la | tee list.txt | wc -l\n\n# Append with tee\ndmesg | tee -a boot.log | grep error\n\n# Pipe both stdout and stderr\ncmd 2>&1 | grep error\n\n# /dev/null: discard output\ncmd > /dev/null       # discard stdout\ncmd > /dev/null 2>&1  # discard both',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Dùng pipe và tee',
+            hint: 'ls /etc | tee /tmp/etc-list.txt | wc -l',
+          },
+          {
             type: 'h2',
             text: 'xargs — Build Commands from stdin',
           },
           {
             type: 'code',
             text: '# Delete all .tmp files found by find\nfind /tmp -name "*.tmp" | xargs rm\n\n# Safe version with null-separated filenames (handles spaces)\nfind /tmp -name "*.tmp" -print0 | xargs -0 rm\n\n# Pass each line as argument with -I\ncat hosts.txt | xargs -I{} ping -c1 {}\n\n# Run multiple jobs in parallel\ncat list.txt | xargs -P4 -I{} wget {}',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Dùng xargs với find',
+            hint: 'find /etc -name "*.conf" -maxdepth 1 | xargs wc -l 2>/dev/null | tail -5',
           },
           {
             type: 'h2',
@@ -618,12 +758,22 @@ export const topic103: Topic = {
             text: '# Create a named pipe\nmkfifo /tmp/mypipe\n\n# Writer process (in one terminal)\necho "hello" > /tmp/mypipe\n\n# Reader process (in another terminal)\ncat /tmp/mypipe\n\n# Use case: log to file and terminal simultaneously\ntar czf - /home | tee /tmp/mypipe | sha256sum\ncat /tmp/mypipe > /backup/home.tar.gz',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tạo và dùng named pipe',
+            hint: 'mkfifo /tmp/testpipe ; echo "test" > /tmp/testpipe & cat /tmp/testpipe ; rm /tmp/testpipe',
+          },
+          {
             type: 'h2',
             text: 'Process Substitution',
           },
           {
             type: 'code',
             text: '# Process substitution: treat command output as a file\ndiff <(sort file1) <(sort file2)\n\n# Compare two command outputs without temp files\ncomm <(sort list1) <(sort list2)\n\n# Redirect output to multiple commands\ntee >(gzip > file.gz) >(sha256sum > file.sha256) > file\n\n# Useful for diff, comm, join where file arguments are needed',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: So sánh hai output với process substitution',
+            hint: 'diff <(ls /bin | sort) <(ls /usr/bin | sort) | head -10',
           },
           {
             type: 'exam',
@@ -657,6 +807,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem PID và PPID của shell hiện tại',
+            hint: 'echo "My PID: $$ ; Parent: $PPID"',
+          },
+          {
             type: 'h2',
             text: 'ps — Process Status',
           },
@@ -675,6 +830,11 @@ export const topic103: Topic = {
               ['pgrep -l name', 'Find PID and name'],
               ['pgrep -u user name', 'Find process by user and name'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem tất cả tiến trình',
+            hint: 'ps aux | head -15',
           },
           {
             type: 'h2',
@@ -698,6 +858,11 @@ export const topic103: Topic = {
               ['h', 'Help'],
               ['Space', 'Refresh immediately'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem tải hệ thống',
+            hint: 'uptime',
           },
           {
             type: 'h2',
@@ -724,6 +889,11 @@ export const topic103: Topic = {
             text: '# Send signal to a process\nkill PID                      # SIGTERM (15)\nkill -9 PID                   # SIGKILL\nkill -SIGKILL PID\nkill -s SIGTERM PID\n\n# Kill by name\nkillall nginx                 # kill all processes named nginx\npkill -9 firefox              # kill by name pattern\n\n# List all signals\nkill -l',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem danh sách tín hiệu',
+            hint: 'kill -l',
+          },
+          {
             type: 'h2',
             text: 'Job Control',
           },
@@ -741,6 +911,11 @@ export const topic103: Topic = {
               ['nohup cmd &', 'Run command immune to SIGHUP (survives logout)'],
               ['disown %N', 'Detach job N from shell (keeps running after logout)'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra các job nền',
+            hint: 'sleep 60 & ; jobs',
           },
           {
             type: 'h2',
@@ -771,6 +946,11 @@ export const topic103: Topic = {
           {
             type: 'code',
             text: '# Read process command line\ncat /proc/1234/cmdline | tr "\\0" " "\n\n# List open file descriptors\nls -la /proc/1234/fd/\n\n# Check memory info\ncat /proc/meminfo | head -20\n\n# Read load averages\ncat /proc/loadavg\n# Output: 0.52 0.35 0.28 2/400 12345\n# Columns: 1min 5min 15min running/total lastPID',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Đọc thông tin bộ nhớ từ /proc',
+            hint: 'cat /proc/meminfo | head -10',
           },
           {
             type: 'h2',
@@ -855,6 +1035,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm process đang lắng nghe port',
+            hint: 'lsof -i :22 2>/dev/null || ss -tlnp | grep :22',
+          },
+          {
             type: 'code',
             text: '# Find what process has a file open\nlsof /var/log/nginx/error.log\n\n# Find process listening on port 443\nlsof -i :443\n# or:\nss -tlnp | grep 443\n\n# Find all deleted files still held open (taking disk space)\nlsof | grep deleted\n\n# Show all files process 1234 has open\nlsof -p 1234\n\n# Find processes using a mount before umount\nfuser -m /mnt/usb\nlsof +D /mnt/usb',
           },
@@ -918,6 +1103,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Khởi chạy tiến trình với ưu tiên thấp',
+            hint: 'nice -n 15 sleep 10 & ; ps -o pid,ni,comm -p $!',
+          },
+          {
             type: 'code',
             text: '# Start a backup process with low priority (nice = 10)\nnice -n 10 tar -czf backup.tar.gz /home/\n\n# Renice a running process\nrenice -n 5 -p 1234\n\n# Check nice values in top (NI column) or ps\nps -o pid,ni,comm -p 1234\n\n# Only root can set negative nice values\nsudo nice -n -5 ./important_process',
           },
@@ -953,6 +1143,11 @@ export const topic103: Topic = {
               ['ionice -p PID', 'Get current I/O class/priority of existing process'],
               ['ionice -c 3 -p PID', 'Set existing process to idle I/O class'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Chạy lệnh với ionice idle',
+            hint: 'ionice -c 3 ls /var/log',
           },
           {
             type: 'code',
@@ -995,6 +1190,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm dòng bắt đầu bằng root',
+            hint: 'grep "^root" /etc/passwd',
+          },
+          {
             type: 'h2',
             text: 'Extended Regular Expression (ERE) Syntax',
           },
@@ -1014,6 +1214,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Dùng ERE với grep -E',
+            hint: 'grep -E "(root|daemon)" /etc/passwd',
+          },
+          {
             type: 'h2',
             text: 'POSIX Character Classes',
           },
@@ -1029,6 +1234,11 @@ export const topic103: Topic = {
               ['[:lower:]', 'Lowercase [a-z]'],
               ['[:punct:]', 'Punctuation characters'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Dùng POSIX character class',
+            hint: 'grep "[[:digit:]]" /etc/passwd | head -5',
           },
           {
             type: 'code',
@@ -1062,12 +1272,22 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm file chứa pattern với grep -r',
+            hint: 'grep -rl "root" /etc/ 2>/dev/null | head -5',
+          },
+          {
             type: 'h2',
             text: 'Practical grep Examples',
           },
           {
             type: 'code',
             text: '# Find all login failures in auth.log\ngrep -i "failed" /var/log/auth.log\n\n# Show failed login attempts with 3 lines of context\ngrep -C3 "Failed password" /var/log/auth.log\n\n# Count how many lines match\ngrep -c "error" /var/log/syslog\n\n# List files containing "TODO"\ngrep -rl "TODO" /project/src/\n\n# Match whole word "cat" (not "concatenate")\ngrep -w "cat" animals.txt\n\n# Show only the matching portion\ngrep -oE "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+" /var/log/httpd/access.log\n\n# Find lines NOT containing "comment"\ngrep -v "^#" /etc/ssh/sshd_config | grep -v "^$"\n\n# Recursive case-insensitive search\ngrep -rin "password" /etc/*.conf',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Lọc dòng không phải comment',
+            hint: 'grep -v "^#" /etc/ssh/sshd_config | grep -v "^$" | head -10',
           },
           {
             type: 'exam',
@@ -1097,6 +1317,11 @@ export const topic103: Topic = {
               ['Visual', 'v, V, Ctrl+V (from Normal)', 'Select text; then apply commands'],
               ['Command-line', ': / ? (from Normal)', 'Enter ex commands, search'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Mở vi và thiết lập hiển thị số dòng',
+            hint: 'vi +"set number" /etc/hosts',
           },
           {
             type: 'h2',
@@ -1135,6 +1360,11 @@ export const topic103: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Mở file với vi và chuyển hướng',
+            hint: 'vi /etc/hosts',
+          },
+          {
             type: 'h2',
             text: 'Editing Commands (Normal Mode)',
           },
@@ -1155,6 +1385,11 @@ export const topic103: Topic = {
               ['cc or S', 'Change entire line'],
               ['.', 'Repeat last change'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem file vướt qua read-only',
+            hint: 'view /etc/hostname',
           },
           {
             type: 'h2',
@@ -1180,6 +1415,11 @@ export const topic103: Topic = {
               [':wq!', 'Save and quit (force)'],
               ['ZQ', 'Quit without saving'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem file không chỉnh sửa',
+            hint: 'view /etc/passwd',
           },
           {
             type: 'h2',
@@ -1216,6 +1456,11 @@ export const topic103: Topic = {
           {
             type: 'code',
             text: '# ~/.vimrc — personal vim configuration\nset number            " show line numbers\nset tabstop=4         " tab = 4 spaces\nset expandtab         " use spaces instead of tabs\nset autoindent        " auto-indent new lines\nset hlsearch          " highlight search results\nset ignorecase        " case-insensitive search\nset smartcase         " case-sensitive if uppercase in pattern\nset wrap              " wrap long lines\nsyntax on             " syntax highlighting\ncolorscheme desert    " color scheme (optional)\n\n# Apply settings without restarting\n:source ~/.vimrc',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình vim',
+            hint: 'cat ~/.vimrc 2>/dev/null || echo "No .vimrc found"',
           },
           {
             type: 'exam',

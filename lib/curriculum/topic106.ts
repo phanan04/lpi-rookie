@@ -35,6 +35,11 @@ export const topic106: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem biến DISPLAY và thông tin X server',
+            hint: 'echo $DISPLAY',
+          },
+          {
             type: 'h2',
             text: 'Key X11 Files and Directories',
           },
@@ -53,6 +58,11 @@ export const topic106: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem log X server',
+            hint: 'cat /var/log/Xorg.0.log 2>/dev/null | tail -20 || ls /var/log/Xorg* 2>/dev/null || echo "X log not found"',
+          },
+          {
             type: 'h2',
             text: 'X11 Forwarding over SSH',
           },
@@ -61,12 +71,22 @@ export const topic106: Topic = {
             text: '# Enable X11 forwarding in SSH session\nssh -X user@remotehost      # X11 forwarding (less secure)\nssh -Y user@remotehost      # Trusted X11 forwarding (more permissive)\n\n# Run a remote GUI app locally\nssh -X user@server xterm\nssh -Y user@server firefox\n\n# Check DISPLAY variable inside SSH session\necho $DISPLAY\n# localhost:10.0  (set automatically by ssh -X)\n\n# Required settings in /etc/ssh/sshd_config on server:\n# X11Forwarding yes\n# X11DisplayOffset 10     # default offset for forwarded displays\n\n# xauth: manage X authentication cookies\nxauth list\nxauth add $DISPLAY MIT-MAGIC-COOKIE-1 <cookie>',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra cấu hình X11 forwarding trong SSH',
+            hint: 'grep -i "X11Forwarding" /etc/ssh/sshd_config 2>/dev/null || echo "sshd_config not readable"',
+          },
+          {
             type: 'h2',
             text: 'Starting and Configuring X',
           },
           {
             type: 'code',
             text: '# Start X manually (uses ~/.xinitrc for startup commands)\nstartx\nstartx -- :1   # start on display :1\n\n# Re-generate xorg.conf (detects hardware automatically)\nXorg -configure       # creates /root/xorg.conf.new\n\n# Check X server info\nxdpyinfo\nxdpyinfo | grep "dimensions"   # screen resolution\nxrandr                          # list displays and resolutions\nxrandr --output HDMI1 --mode 1920x1080 --rate 60\nxrandr --output VGA1 --off      # disable a monitor\n\n# Check display manager (DM) in use\ncat /etc/X11/default-display-manager\nsystemctl status gdm3 lightdm sddm',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem Display Manager đang chạy',
+            hint: 'cat /etc/X11/default-display-manager 2>/dev/null || systemctl list-units --type=service | grep -E "gdm|lightdm|sddm|xdm"',
           },
           {
             type: 'exam',
@@ -103,6 +123,11 @@ export const topic106: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem Desktop Environment đang cài',
+            hint: 'echo $XDG_CURRENT_DESKTOP 2>/dev/null ; echo $DESKTOP_SESSION 2>/dev/null',
+          },
+          {
             type: 'h2',
             text: 'Display Managers',
           },
@@ -116,6 +141,11 @@ export const topic106: Topic = {
               ['XDM (X Display Manager)', 'Classic, minimal; part of the original X distribution'],
               ['SLIM', 'Simple Login Manager; lightweight but unmaintained'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra Display Manager đang hoạt động',
+            hint: 'systemctl is-active gdm gdm3 lightdm sddm xdm 2>/dev/null | head -5',
           },
           {
             type: 'h2',
@@ -133,6 +163,11 @@ export const topic106: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra Wayland hay X11',
+            hint: 'echo $WAYLAND_DISPLAY ; echo $XDG_SESSION_TYPE',
+          },
+          {
             type: 'h2',
             text: 'Remote Desktop Protocols',
           },
@@ -146,6 +181,11 @@ export const topic106: Topic = {
               ['RDP', 'Remote Desktop Protocol', 'Microsoft protocol used to connect to Windows desktops. Linux implementation: xrdp (server), rdesktop / FreeRDP (clients). Port 3389.'],
               ['NX / X2Go', 'NX Technology / X2Go', 'Compressed X11 session over SSH. Very efficient on slow links. X2Go is active free software based on NX.'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra các giao thức remote desktop',
+            hint: 'ss -tlnp 2>/dev/null | grep -E "5900|3389|177" || echo "No remote desktop ports open"',
           },
           {
             type: 'exam',
@@ -194,6 +234,11 @@ export const topic106: Topic = {
               ['brltty', 'Daemon providing braille display support in the console'],
               ['speakup', 'Kernel module for speech output directly from the Linux console'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Text-to-speech từ dòng lệnh',
+            hint: 'espeak "Hello Linux" 2>/dev/null || echo "espeak not installed; try: apt install espeak"',
           },
           {
             type: 'exam',

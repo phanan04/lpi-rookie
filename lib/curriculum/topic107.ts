@@ -27,6 +27,11 @@ export const topic107: Topic = {
             text: '# Example /etc/passwd entry:\nroot:x:0:0:root:/root:/bin/bash\nalice:x:1001:1001:Alice Smith,,,:/home/alice:/bin/bash\nnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin\n\n# Fields:\n# 1: username\n# 2: x = password in /etc/shadow\n# 3: UID (User ID)\n# 4: GID (primary Group ID)\n# 5: GECOS / comment field (full name, room, phone...)\n# 6: home directory\n# 7: login shell (/bin/bash, /sbin/nologin, /bin/false)',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem nội dung /etc/passwd',
+            hint: 'cat /etc/passwd | head -10',
+          },
+          {
             type: 'h2',
             text: '/etc/shadow — Password Hashes',
           },
@@ -49,12 +54,22 @@ export const topic107: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin aging của user hiện tại',
+            hint: 'chage -l $(whoami)',
+          },
+          {
             type: 'h2',
             text: '/etc/group — Group Database',
           },
           {
             type: 'code',
             text: '# /etc/group format: groupname:password:GID:members\nroot:x:0:\nsudo:x:27:alice,bob\ndocker:x:999:alice\n\n# Supplementary groups: user belongs to primary GID + all groups listing them',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem các nhóm của user hiện tại',
+            hint: 'id ; groups',
           },
           {
             type: 'h2',
@@ -91,6 +106,11 @@ export const topic107: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin user',
+            hint: 'whoami ; id ; finger $(whoami) 2>/dev/null || grep "^$(whoami):" /etc/passwd',
+          },
+          {
             type: 'h2',
             text: 'Group Management Commands',
           },
@@ -110,6 +130,11 @@ export const topic107: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem danh sách group trong hệ thống',
+            hint: 'cat /etc/group | head -15',
+          },
+          {
             type: 'h2',
             text: 'Default Files for New Users',
           },
@@ -125,6 +150,11 @@ export const topic107: Topic = {
           {
             type: 'code',
             text: '# View password aging info\nchage -l alice\n# Last password change     : Jan 01, 2026\n# Password expires         : Apr 01, 2026\n# Account expires          : never\n\n# Force user to change password at next login\nchage -d 0 alice      # set lastchange to epoch = expired immediately\npasswd -e alice       # same effect\n\n# View login.defs\ngrep -v "^#" /etc/login.defs | grep -v "^$"\n\n# Convert shadow to old format (emergency access)\npwunconv     # merge shadow back to /etc/passwd\npwconv       # split passwords back to /etc/shadow',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình mặc định cho user mới',
+            hint: 'grep -v "^#" /etc/login.defs | grep -v "^$" | head -20',
           },
           {
             type: 'exam',
@@ -161,6 +191,11 @@ export const topic107: Topic = {
             text: '# Crontab format: 5 time fields + command\n# MIN  HOUR  DOM  MON  DOW  COMMAND\n#  |    |     |    |    |\n#  |    |     |    |    +--- Day of Week: 0-7 (0 and 7 = Sunday)\n#  |    |     |    +-------- Month: 1-12 (or names: jan-dec)\n#  |    |     +------------- Day of Month: 1-31\n#  |    +------------------- Hour: 0-23\n#  +------------------------ Minute: 0-59\n\n# Examples:\n30 2 * * *     /usr/bin/backup.sh         # Daily at 02:30\n0  9 * * 1     /scripts/weekly-report.sh  # Every Monday at 09:00\n*/15 * * * *   /usr/bin/check.sh          # Every 15 minutes\n0 0 1 * *      /scripts/monthly.sh        # First of every month at midnight\n0 6 * * 1-5    /scripts/workday.sh        # Weekdays at 06:00\n0 */6 * * *    /scripts/every6h.sh        # Every 6 hours\n5 4 * * 0      /scripts/sunday.sh         # Every Sunday at 04:05\n@reboot        /scripts/startup.sh        # At system start\n@daily         /scripts/daily.sh          # Once a day (= 0 0 * * *)\n@hourly        /scripts/hourly.sh         # Once an hour',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem crontab hiện tại',
+            hint: 'crontab -l 2>/dev/null || echo "No crontab for current user"',
+          },
+          {
             type: 'h2',
             text: 'Managing Crontabs',
           },
@@ -175,6 +210,11 @@ export const topic107: Topic = {
               ['crontab -u alice -l', 'List alice\'s crontab'],
               ['crontab file', 'Install crontab from a file (replaces existing)'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem system crontab',
+            hint: 'cat /etc/crontab',
           },
           {
             type: 'h2',
@@ -197,12 +237,22 @@ export const topic107: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem các script cron.daily',
+            hint: 'ls /etc/cron.daily/ ; ls /etc/cron.weekly/',
+          },
+          {
             type: 'h2',
             text: 'at — One-Time Scheduling',
           },
           {
             type: 'code',
             text: '# Schedule a one-time task\nat 14:30                           # enter command interactively at prompt\nat 14:30 tomorrow\nat 2:30pm + 1 week\nat now + 2 hours\n\n# Specify command directly\necho "backup.sh" | at midnight\nat -f /scripts/backup.sh 03:00\n\n# List pending at jobs\natq\n\n# Remove an at job by job number\natrm 5\n\n# at access control (same logic as cron)\n/etc/at.allow    # if exists: only listed users can use at\n/etc/at.deny     # if exists: listed users denied access to at\n\n# batch — like at, but runs when system load drops below 1.5\nbatch\n# Enter command at the prompt, then Ctrl+D\necho "/scripts/heavy_report.sh" | batch\n# batch queues jobs to run when idle — no specific time required',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem hàng đợi at jobs',
+            hint: 'atq 2>/dev/null || at -l 2>/dev/null || echo "No at jobs or at not installed"',
           },
           {
             type: 'h2',
@@ -217,12 +267,22 @@ export const topic107: Topic = {
             text: '# /etc/anacrontab format:\n# period  delay  job-id  command\n1         5      cron.daily    run-parts /etc/cron.daily\n7         10     cron.weekly   run-parts /etc/cron.weekly\n30        15     cron.monthly  run-parts /etc/cron.monthly\n\n# period: days between runs\n# delay: minutes to wait after boot before running\n# job-id: unique identifier for tracking\n\n# anacron tracks last run dates in:\n# /var/spool/anacron/',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình anacron',
+            hint: 'cat /etc/anacrontab 2>/dev/null || echo "anacron not configured"',
+          },
+          {
             type: 'h2',
             text: 'systemd Timers',
           },
           {
             type: 'code',
             text: '# List all systemd timers\nsystemctl list-timers\nsystemctl list-timers --all\n\n# A systemd timer consists of two unit files:\n# mybackup.timer  + mybackup.service\n\n# Example: /etc/systemd/system/mybackup.timer\n[Unit]\nDescription=Run backup daily\n\n[Timer]\nOnCalendar=daily\nPersistent=true       # run if missed (like anacron)\n\n[Install]\nWantedBy=timers.target\n\n# Enable and start:\nsystemctl enable --now mybackup.timer',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem systemd timers đang hoạt động',
+            hint: 'systemctl list-timers --no-pager 2>/dev/null | head -15',
           },
           {
             type: 'exam',
@@ -266,8 +326,18 @@ export const topic107: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem locale hiện tại',
+            hint: 'locale',
+          },
+          {
             type: 'code',
             text: '# Show current locale settings\nlocale\n\n# List available locales\nlocale -a\nlocale -a | grep en_US\n\n# Locale format: language_COUNTRY.ENCODING\n# en_US.UTF-8 = English, United States, UTF-8 encoding\n# fr_FR.UTF-8 = French, France\n# ja_JP.EUC-JP = Japanese, Japan, EUC-JP encoding\n# C or POSIX = minimal POSIX locale (ASCII only)\n\n# Set locale for current session\nexport LANG=en_US.UTF-8\nexport LC_ALL=C    # force ASCII/POSIX (useful in scripts)\n\n# System-wide locale configuration:\n# Debian/Ubuntu:\ncat /etc/default/locale\nlocalectl set-locale LANG=en_US.UTF-8\n\n# RHEL/CentOS:\ncat /etc/locale.conf\nlocalectl set-locale LANG=en_US.UTF-8\n\n# Generate a locale (after editing /etc/locale.gen on Debian)\nlocale-gen en_US.UTF-8\n\n# localectl: systemd locale management\nlocalectl\nlocalectl list-locales\nlocalectl set-locale LANG=de_DE.UTF-8',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem localectl và cài đặt locale hệ thống',
+            hint: 'localectl status',
           },
           {
             type: 'h2',
@@ -276,6 +346,11 @@ export const topic107: Topic = {
           {
             type: 'code',
             text: '# Show current date, time, and timezone\ndate\ntimedatectl\n\n# List available timezones\ntimedatectl list-timezones\ntimedatectl list-timezones | grep America\n\n# Set timezone\ntimedatectl set-timezone America/New_York\ntimedatectl set-timezone UTC\n\n# Manual timezone setting (symlink method)\nln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime\n\n# /etc/timezone (Debian): contains timezone name string\ncat /etc/timezone\necho "America/New_York" > /etc/timezone\ndpkg-reconfigure tzdata    # Debian interactive\n\n# TZ environment variable (per-session override)\nexport TZ="Asia/Tokyo"\ndate\nTZ="UTC" date    # one-time; does not persist',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem timezone hiện tại',
+            hint: 'timedatectl status ; cat /etc/timezone 2>/dev/null ; date',
           },
           {
             type: 'h2',
@@ -298,12 +373,22 @@ export const topic107: Topic = {
             text: '# Convert file encoding\niconv -f ISO-8859-1 -t UTF-8 input.txt -o output.txt\niconv -l             # list all supported encodings\n\n# Check encoding of a file\nfile -i document.txt\n# document.txt: text/plain; charset=utf-8',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra encoding của file',
+            hint: 'file -i /etc/passwd ; echo $LANG',
+          },
+          {
             type: 'h2',
             text: 'Keyboard and Console Settings',
           },
           {
             type: 'code',
             text: '# Set keyboard layout for the console\nlocalectl set-keymap us\nlocalectl set-keymap de\n\n# Set console keymap and X11 keymap together\nlocalectl set-keymap us\nlocalectl set-x11-keymap us\n\n# Temporary console keymap change (old method)\nloadkeys us\nloadkeys de\n\n# Show current keyboard settings\nlocalectl status\n\n# /etc/vconsole.conf (systemd):\ncat /etc/vconsole.conf\n# KEYMAP=us\n# FONT=Lat2-Terminus16\n\n# Set console font\nsetfont Lat2-Terminus16',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem keymap hiện tại',
+            hint: 'localectl status 2>/dev/null | grep -i keymap || cat /etc/vconsole.conf 2>/dev/null',
           },
           {
             type: 'exam',

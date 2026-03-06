@@ -35,6 +35,11 @@ export const topic104: Topic = {
             text: '# fdisk interactive session\nfdisk /dev/sdb\n# Key commands inside fdisk:\n#  m  = display help menu\n#  p  = print partition table\n#  n  = new partition\n#  d  = delete partition\n#  t  = change partition type (82=Linux swap, 83=Linux, 8e=Linux LVM)\n#  w  = write changes and exit\n#  q  = quit without saving\n\n# List partition table without entering fdisk\nfdisk -l /dev/sdb\n\n# gdisk for GPT\ngdisk /dev/sdb\n\n# parted\nparted /dev/sdb print\nparted /dev/sdb mklabel gpt\nparted /dev/sdb mkpart primary ext4 1MiB 10GiB',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem bảng phân vùng của ổ đĩa',
+            hint: 'fdisk -l /dev/sda 2>/dev/null || lsblk',
+          },
+          {
             type: 'h2',
             text: 'Creating Filesystems (mkfs)',
           },
@@ -52,6 +57,11 @@ export const topic104: Topic = {
               ['mkfs -t ext4 /dev/sdb1', 'ext4', 'Alternative syntax'],
               ['mkswap /dev/sdb2', 'swap', 'Initialise swap partition'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem loại filesystem của các phân vùng',
+            hint: 'lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINTS',
           },
           {
             type: 'h2',
@@ -77,6 +87,11 @@ export const topic104: Topic = {
             text: '# Start interactive parted session\nparted /dev/sdb\n\n# Inside parted (interactive commands):\n(parted) help                      # list commands\n(parted) print                     # show partition table\n(parted) mklabel gpt               # create new GPT partition table\n(parted) mklabel msdos             # create new MBR partition table\n(parted) mkpart primary ext4 1MiB 10GiB   # create primary partition\n(parted) mkpart primary linux-swap 10GiB 12GiB  # swap partition\n(parted) rm 1                      # delete partition 1\n(parted) resizepart 1 20GiB        # resize partition 1 to 20 GiB\n(parted) name 1 "boot"             # name partition (GPT only)\n(parted) set 1 boot on             # set boot flag\n(parted) set 2 lvm on              # set LVM flag\n(parted) quit\n\n# Non-interactive (scripted)\nparted -s /dev/sdb mklabel gpt\nparted -s /dev/sdb mkpart primary ext4 1MiB 10GiB\nparted /dev/sdb print',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin phân vùng với parted',
+            hint: 'parted /dev/sda print 2>/dev/null || lsblk -o NAME,PTTYPE,SIZE',
+          },
+          {
             type: 'table',
             headers: ['Partition Type Flag', 'Description'],
             rows: [
@@ -96,6 +111,11 @@ export const topic104: Topic = {
             text: '# lsblk: list block devices in tree view\nlsblk\n# NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS\n# sda      8:0    0   50G  0 disk\n# ├─sda1   8:1    0    1G  0 part /boot\n# └─sda2   8:2    0   49G  0 part\n#   ├─vg-root 253:0  0  45G  0 lvm  /\n#   └─vg-swap 253:1  0   4G  0 lvm  [SWAP]\n\n# Show filesystem type and UUID\nlsblk -o NAME,SIZE,FSTYPE,UUID,MOUNTPOINTS\n\n# blkid: show UUIDs and filesystem types\nblkid\nblkid /dev/sda1\n# /dev/sda1: UUID="abc-123" TYPE="ext4" PARTUUID="..."\n\n# Get just the UUID of a device\nblkid -s UUID -o value /dev/sda1',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem UUID của các phân vùng',
+            hint: 'blkid',
+          },
+          {
             type: 'h2',
             text: 'Swap Space',
           },
@@ -110,6 +130,11 @@ export const topic104: Topic = {
               ['swapon --show', 'Same, tabular format'],
               ['free -h', 'Shows total/used/free swap'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem trạng thái swap',
+            hint: 'swapon --show',
           },
           {
             type: 'code',
@@ -144,6 +169,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra dung lượng phân vùng',
+            hint: 'df -hT',
+          },
+          {
             type: 'h2',
             text: 'Filesystem Check and Repair',
           },
@@ -167,6 +197,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra trạng thái filesystem không giải phóng',
+            hint: 'fsck -n /dev/sda1 2>/dev/null | head -10',
+          },
+          {
             type: 'h2',
             text: 'tune2fs — Tune ext Filesystems',
           },
@@ -183,6 +218,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin superblock',
+            hint: 'tune2fs -l /dev/sda1 2>/dev/null | head -20',
+          },
+          {
             type: 'h2',
             text: 'mke2fs and debugfs',
           },
@@ -197,6 +237,11 @@ export const topic104: Topic = {
           {
             type: 'code',
             text: '# Check inode usage (inodes used vs available)\ndf -i\ndf -ih   # human-readable inode counts\n\n# Find largest directories by disk use\ndu -sh /var/log/*\n\n# Find top 10 directories by size\ndu -h /home | sort -rh | head -10\n\n# Check filesystem type\ndf -T\nstat -f /home   # show filesystem statistics',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem dung lượng các thư mục lớn',
+            hint: 'du -sh /var/log/* 2>/dev/null | sort -rh | head -10',
           },
           {
             type: 'exam',
@@ -232,12 +277,22 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem tất cả filesystem đang mount',
+            hint: 'mount | column -t | head -15',
+          },
+          {
             type: 'h2',
             text: 'umount Command',
           },
           {
             type: 'code',
             text: '# Unmount by mount point\numount /mnt/data\n\n# Unmount by device\numount /dev/sdb1\n\n# Force unmount (use carefully)\numount -f /mnt/data\n\n# Lazy unmount (detach from namespace, cleans up when idle)\numount -l /mnt/data\n\n# Error: "device is busy" — find what\'s using it\nlsof /mnt/data\nfuser -m /mnt/data\nfuser -km /mnt/data   # kill processes using it',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra /etc/fstab',
+            hint: 'cat /etc/fstab',
           },
           {
             type: 'h2',
@@ -284,6 +339,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem các tùy chọn mount hiện tại',
+            hint: 'cat /proc/mounts | column -t | head -10',
+          },
+          {
             type: 'h2',
             text: 'Special Filesystem Types',
           },
@@ -302,6 +362,11 @@ export const topic104: Topic = {
           {
             type: 'code',
             text: '# Bind mount: make a directory accessible at another path\nmount --bind /home/alice /var/www/alice\n\n# Mount an ISO image\nmount -o loop,ro /path/to/image.iso /mnt/iso\n\n# Mount NFS share\nmount -t nfs 192.168.1.100:/exports/data /mnt/nfs\n\n# NFS in /etc/fstab\n192.168.1.100:/exports/data  /mnt/nfs  nfs  defaults  0 0\n\n# tmpfs in /etc/fstab (RAM-based /tmp)\ntmpfs  /tmp  tmpfs  defaults,noatime,mode=1777  0 0',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem các filesystem được hỗ trợ',
+            hint: 'cat /proc/filesystems',
           },
           {
             type: 'exam',
@@ -335,6 +400,11 @@ export const topic104: Topic = {
             text: '# Example: -rwxr-xr--  1 alice dev 1024 Mar 6 10:00 script.sh\n# Breakdown:\n# -  = regular file (d=dir, l=link, c=char, b=block)\n# rwx = owner (alice) can read, write, execute\n# r-x = group (dev) can read and execute\n# r-- = others can only read\n\n# Numeric (octal) notation:\n# r=4, w=2, x=1\n# rwx = 4+2+1 = 7\n# r-x = 4+0+1 = 5\n# r-- = 4+0+0 = 4\n# So: -rwxr-xr-- = 754',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem quyền truy cập chi tiết',
+            hint: 'ls -la /etc/passwd /etc/shadow',
+          },
+          {
             type: 'h2',
             text: 'chmod — Change Permissions',
           },
@@ -354,6 +424,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Thay đổi quyền truy cập file',
+            hint: 'touch /tmp/testperm ; chmod 644 /tmp/testperm ; ls -la /tmp/testperm',
+          },
+          {
             type: 'h2',
             text: 'chown and chgrp',
           },
@@ -370,6 +445,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem chủ sở hữu các file',
+            hint: 'ls -la /home/',
+          },
+          {
             type: 'h2',
             text: 'umask',
           },
@@ -380,6 +460,11 @@ export const topic104: Topic = {
           {
             type: 'code',
             text: '# View current umask\numask\numask -S  # symbolic view\n\n# Default creation permissions:\n# Files:       666 (rw-rw-rw-)\n# Directories: 777 (rwxrwxrwx)\n\n# With umask 022:\n# Files:       666 - 022 = 644 (rw-r--r--)\n# Directories: 777 - 022 = 755 (rwxr-xr-x)\n\n# With umask 027:\n# Files:       666 - 027 = 640 (rw-r-----)\n# Directories: 777 - 027 = 750 (rwxr-x---)\n\n# Set umask for session\numask 022\n\n# Permanent: add to ~/.bashrc or /etc/profile',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem umask hiện tại',
+            hint: 'umask ; umask -S',
           },
           {
             type: 'h2',
@@ -397,6 +482,11 @@ export const topic104: Topic = {
           {
             type: 'code',
             text: '# Examples of special bits\nls -la /usr/bin/passwd\n# -rwsr-xr-x  (SUID: s in owner execute position)\n\nls -la /tmp\n# drwxrwxrwt  (Sticky: t in others execute position)\n\nls -la /usr/bin/write\n# -rwxr-sr-x  (SGID: s in group execute position)',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Tìm file có bit SUID',
+            hint: 'find /usr/bin -perm /4000 2>/dev/null | head -5',
           },
           {
             type: 'h2',
@@ -425,6 +515,11 @@ export const topic104: Topic = {
             text: '# Filesystem must be mounted with "acl" option, or acl support compiled in\n# View ACL\ngetfacl /var/www/html/\n# output:\n# # file: html/\n# # owner: www-data\n# # group: www-data\n# user::rwx\n# user:alice:rwx    <-- extra user entry!\n# group::r-x\n# mask::rwx\n# other::r-x\n\n# Copy ACL from one file to another\ngetfacl source.txt | setfacl --set-file=- dest.txt',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Hiển thị ACL của thư mục home',
+            hint: 'getfacl /home 2>/dev/null || echo "ACL not available"',
+          },
+          {
             type: 'h2',
             text: 'chattr and lsattr — Extended File Attributes',
           },
@@ -442,6 +537,11 @@ export const topic104: Topic = {
           {
             type: 'code',
             text: '# Make a file immutable\nchattr +i /etc/resolv.conf\n\n# Remove immutable flag\nchattr -i /etc/resolv.conf\n\n# Make a log file append-only\nchattr +a /var/log/app.log\n\n# List attributes\nlsattr /etc/resolv.conf\n# ----i----------- /etc/resolv.conf',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem các thuộc tính extended của file',
+            hint: 'lsattr /etc/passwd',
           },
           {
             type: 'exam',
@@ -483,6 +583,11 @@ export const topic104: Topic = {
             text: '# Create a hard link\nln /etc/hosts /tmp/hosts-link\nls -li /etc/hosts /tmp/hosts-link   # same inode number!\n\n# Create a symbolic link\nln -s /etc/hosts /tmp/hosts-symlink\nls -la /tmp/hosts-symlink\n# lrwxrwxrwx 1 root root 10 ... /tmp/hosts-symlink -> /etc/hosts\n\n# Dangling symlink (target deleted)\nln -s /tmp/nonexistent /tmp/broken\nls -la /tmp/broken   # link exists but points to nothing\n\n# Find all hard links to same inode\nfind / -inum 1234567\n\n# View link count in ls -l (3rd column)\nls -l /etc/hosts   # 1 = one hard link (besides itself)',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tạo và kiểm tra symbolic link',
+            hint: 'ln -s /etc/hostname /tmp/hostname-link ; ls -la /tmp/hostname-link ; readlink /tmp/hostname-link',
+          },
+          {
             type: 'h2',
             text: 'Relative vs Absolute Symlinks',
           },
@@ -506,6 +611,11 @@ export const topic104: Topic = {
               ['ls -i file', 'Show inode number in listing'],
               ['ls -li dir/', 'Long listing with inode numbers'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra inode number',
+            hint: 'stat /etc/passwd ; ls -i /etc/passwd',
           },
           {
             type: 'code',
@@ -606,6 +716,11 @@ export const topic104: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm kiếm file trong hệ thống',
+            hint: 'which python3 2>/dev/null ; whereis bash',
+          },
+          {
             type: 'h2',
             text: 'find — Comprehensive Reference',
           },
@@ -634,6 +749,11 @@ export const topic104: Topic = {
               ['!  -not', 'Negate condition', 'find / -not -type f'],
               ['-o  -or', 'OR two conditions', 'find / -name "*.log" -o -name "*.tmp"'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Tìm file có SUID bit trong /usr',
+            hint: 'find /usr/bin -perm /4000 -type f 2>/dev/null',
           },
           {
             type: 'exam',

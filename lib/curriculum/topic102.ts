@@ -39,6 +39,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Khám phá cấu trúc thư mục gốc',
+            hint: 'ls /',
+          },
+          {
             type: 'h2',
             text: 'Partitioning Schemes',
           },
@@ -49,6 +54,11 @@ export const topic102: Topic = {
               ['MBR (Master Boot Record)', 'Legacy, max 4 primary partitions, max disk size 2 TB. Extended+Logical partitions allow more.'],
               ['GPT (GUID Partition Table)', 'Modern, up to 128 partitions, >2 TB disks, required for UEFI.'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem danh sách ổ đĩa và phân vùng',
+            hint: 'lsblk',
           },
           {
             type: 'h2',
@@ -67,6 +77,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem Physical Volumes',
+            hint: 'pvs',
+          },
+          {
             type: 'h2',
             text: 'Swap Space',
           },
@@ -77,6 +92,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# Create and activate a swap partition\nmkswap /dev/sda2\nswapon /dev/sda2\n\n# Create a swap file\ndd if=/dev/zero of=/swapfile bs=1M count=2048\nchmod 600 /swapfile\nmkswap /swapfile\nswapon /swapfile\n\n# Check swap usage\nswapon --show\nfree -h',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra swap đang hoạt động',
+            hint: 'swapon --show',
           },
           {
             type: 'tip',
@@ -112,6 +132,11 @@ export const topic102: Topic = {
             text: '# Full LVM setup example:\npvcreate /dev/sdb1 /dev/sdc1\nvgcreate vg_data /dev/sdb1 /dev/sdc1\nlvcreate -L 20G -n lv_home vg_data\nmkfs.ext4 /dev/vg_data/lv_home\nmount /dev/vg_data/lv_home /home\n\n# Add to /etc/fstab for persistence:\n/dev/vg_data/lv_home  /home  ext4  defaults  0  2\n\n# LVM device paths:\n/dev/vg_data/lv_home\n/dev/mapper/vg_data-lv_home   # (same device, different path)',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem Logical Volumes',
+            hint: 'lvs',
+          },
+          {
             type: 'h2',
             text: 'MBR vs GPT — Detailed Comparison',
           },
@@ -132,6 +157,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# View partition table info\ncat /proc/partitions\n# major minor  #blocks  name\n#    8     0  52428800 sda\n#    8     1    512000 sda1\n#    8     2  51915776 sda2\n\n# View with lsblk\nlsblk\n\n# MBR extended/logical layout (fdisk shows):\n# sda1  primary\n# sda2  primary\n# sda3  extended   (container for logical partitions)\n# sda5  logical    (inside extended, numbering starts at 5)\n# sda6  logical\n\n# Check if disk uses MBR or GPT\nparted /dev/sda print | grep "Partition Table"',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra loại bảng phân vùng',
+            hint: 'parted /dev/sda print | grep "Partition Table"',
           },
           {
             type: 'exam',
@@ -168,6 +198,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem file cấu hình GRUB2',
+            hint: 'cat /etc/default/grub',
+          },
+          {
             type: 'h2',
             text: 'Key /etc/default/grub Settings',
           },
@@ -176,12 +211,22 @@ export const topic102: Topic = {
             text: '# /etc/default/grub\nGRUB_DEFAULT=0                  # Default menu entry (0 = first)\nGRUB_TIMEOUT=5                  # Seconds to wait before auto-boot\nGRUB_TIMEOUT_STYLE=menu         # show menu/countdown/hidden\nGRUB_CMDLINE_LINUX_DEFAULT="quiet splash"\nGRUB_CMDLINE_LINUX=""           # Added to all kernels, including recovery\nGRUB_DISTRIBUTOR="$(lsb_release -i -s 2>/dev/null)"\n\n# After editing, regenerate:\nupdate-grub          # Debian/Ubuntu\ngrub2-mkconfig -o /boot/grub2/grub.cfg   # RHEL/CentOS/Fedora',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem nội dung grub.cfg',
+            hint: 'cat /boot/grub/grub.cfg | head -30',
+          },
+          {
             type: 'h2',
             text: 'Installing GRUB2',
           },
           {
             type: 'code',
             text: '# Install GRUB to MBR of /dev/sda\ngrub-install /dev/sda\n\n# Install to specific partition (UEFI)\ngrub-install --target=x86_64-efi --efi-directory=/boot/efi\n\n# After kernel update, regenerate config:\nupdate-grub',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem phân vùng boot',
+            hint: 'ls /boot/',
           },
           {
             type: 'h2',
@@ -194,6 +239,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# Example /boot/grub/menu.lst (GRUB Legacy)\ndefault 0\ntimeout 5\n\ntitle Ubuntu 10.04\nroot (hd0,0)\nkernel /boot/vmlinuz-2.6.32 root=/dev/sda1 ro quiet splash\ninitrd /boot/initrd.img-2.6.32',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra phiên bản GRUB',
+            hint: 'grub-install --version',
           },
           {
             type: 'warning',
@@ -209,6 +259,11 @@ export const topic102: Topic = {
             text: '# Press Shift (BIOS) or Esc (UEFI) at boot to show GRUB menu\n# Press "e" to edit selected entry, Ctrl+X to boot modified entry\n\n# GRUB rescue prompt (minimal — grub rescue>)\ngrub rescue> ls           # list detected disks/partitions\ngrub rescue> ls (hd0,1)/  # list files on first partition\ngrub rescue> set root=(hd0,1)\ngrub rescue> set prefix=(hd0,1)/boot/grub\ngrub rescue> insmod normal\ngrub rescue> normal        # load full grub menu\n\n# GRUB shell (grub>)\ngrub> linux /boot/vmlinuz root=/dev/sda1\ngrub> initrd /boot/initrd.img\ngrub> boot',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê các kernel được cài đặt',
+            hint: 'ls /boot/vmlinuz*',
+          },
+          {
             type: 'h2',
             text: 'GRUB2 Loading Stages',
           },
@@ -221,6 +276,11 @@ export const topic102: Topic = {
               ['Stage 2', '/boot/grub/ directory', 'Full GRUB environment: reads grub.cfg, displays menu, loads kernel + initrd'],
               ['UEFI mode', 'EFI System Partition (ESP)', 'grubx64.efi loaded directly by UEFI firmware — Stage 1/1.5 not needed'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem các script trong /etc/grub.d/',
+            hint: 'ls /etc/grub.d/',
           },
           {
             type: 'h2',
@@ -241,6 +301,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# /etc/grub.d/40_custom — add a custom boot entry\n#!/bin/sh\nexec tail -n +3 $0\n\nmenuentry "Recovery USB" {\n    set root=(hd1,1)\n    linux /boot/vmlinuz root=/dev/sdb1 ro\n    initrd /boot/initrd.img\n}\n\n# After editing 40_custom, ALWAYS regenerate grub.cfg:\nupdate-grub                                  # Debian/Ubuntu\ngrub2-mkconfig -o /boot/grub2/grub.cfg       # RHEL/CentOS\n\n# Install GRUB to disk:\ngrub-install /dev/sda                              # BIOS/MBR install\ngrub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB  # UEFI install\n\n# grub-install --recheck: force re-probe device map (use after adding new disk)\ngrub-install --recheck /dev/sda',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem nội dung 40_custom',
+            hint: 'cat /etc/grub.d/40_custom',
           },
           {
             type: 'exam',
@@ -274,6 +339,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm các file thư viện shared',
+            hint: 'ls /usr/lib/*.so* | head -10',
+          },
+          {
             type: 'h2',
             text: 'Library Naming Convention',
           },
@@ -291,8 +361,18 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem symlink của thư viện',
+            hint: 'ls -la /usr/lib/x86_64-linux-gnu/libssl.so* 2>/dev/null || ls -la /usr/lib64/libssl.so* 2>/dev/null',
+          },
+          {
             type: 'code',
             text: '# ldconfig creates and manages soname symlinks automatically\nldconfig\n\n# Symlink chain in /usr/lib/x86_64-linux-gnu/:\n# libssl.so         -> libssl.so.1.1        (linker name — created by -dev package)\n# libssl.so.1.1     -> libssl.so.1.1.1t     (soname — created by ldconfig)\n# libssl.so.1.1.1t                           (real name — the actual .so file)\n\n# ldd shows the soname each binary is linked against:\nldd /usr/bin/openssl\n# libssl.so.1.1 => /usr/lib/x86_64-linux-gnu/libssl.so.1.1 (0x00007f...)\n\n# Find which library file is behind a soname:\nreadlink -f /usr/lib/x86_64-linux-gnu/libssl.so.1.1',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem thư viện cần bởi bash',
+            hint: 'ldd /bin/bash',
           },
           {
             type: 'h2',
@@ -310,6 +390,11 @@ export const topic102: Topic = {
               'System-wide cache /etc/ld.so.cache (built by ldconfig)',
               'Default directories: /lib, /usr/lib, /lib64, /usr/lib64',
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem nội dung ld.so.cache',
+            hint: 'ldconfig -p | head -10',
           },
           {
             type: 'h2',
@@ -331,6 +416,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# Check what libraries bash needs\nldd /bin/bash\n# Output shows:  libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2\n\n# Add a custom lib dir and rebuild cache\necho "/usr/local/myapp/lib" > /etc/ld.so.conf.d/myapp.conf\nldconfig\n\n# Temporarily override for one command\nLD_LIBRARY_PATH=/opt/mylib/lib ./myprogram',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Tìm thư mục thư viện hệ thống',
+            hint: 'cat /etc/ld.so.conf',
           },
           {
             type: 'exam',
@@ -376,6 +466,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê tất cả package đã cài',
+            hint: 'dpkg -l | head -20',
+          },
+          {
             type: 'h2',
             text: 'apt and apt-get — High-Level Package Tools',
           },
@@ -400,6 +495,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm kiếm package đã cài',
+            hint: 'apt list --installed 2>/dev/null | head -10',
+          },
+          {
             type: 'h2',
             text: 'apt-cache — Query Package Metadata',
           },
@@ -415,6 +515,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin chi tiết của package',
+            hint: 'apt-cache show bash | head -20',
+          },
+          {
             type: 'h2',
             text: 'Repository Configuration',
           },
@@ -423,12 +528,22 @@ export const topic102: Topic = {
             text: '# /etc/apt/sources.list format:\n# deb URL distribution component1 component2\ndeb http://deb.debian.org/debian bookworm main contrib non-free\ndeb-src http://deb.debian.org/debian bookworm main\n\n# Additional sources in /etc/apt/sources.list.d/*.list\n\n# Types:\n# deb = binary packages\n# deb-src = source packages',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình repository',
+            hint: 'cat /etc/apt/sources.list',
+          },
+          {
             type: 'h2',
             text: 'apt-file — Search Package Contents',
           },
           {
             type: 'code',
             text: '# apt-file: search which package provides a specific file\n# (even files not yet installed)\nsudo apt install apt-file\nsudo apt-file update          # build cache\n\napt-file search /usr/bin/convert       # which package has this binary?\napt-file list imagemagick              # list all files in imagemagick package\napt-file search "libssl.so"            # find package providing a library',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Tìm package sở hữu một file',
+            hint: 'dpkg -S /bin/bash',
           },
           {
             type: 'h2',
@@ -446,6 +561,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Tìm package đã xóa nhưng còn config',
+            hint: 'dpkg -l | grep "^rc"',
+          },
+          {
             type: 'h2',
             text: 'APT Pinning',
           },
@@ -456,6 +576,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# /etc/apt/preferences.d/mypin\nPackage: nginx\nPin: version 1.24.*\nPin-Priority: 1001\n\n# Priority rules:\n# >= 1000: install even if it is a downgrade\n# 990: default for installed version\n# 500: default system preference\n# 100: apt -t or package/<suite> selection\n# < 0: never install\n\n# Hold a package at current version\napt-mark hold nginx\napt-mark unhold nginx\ndpkg --get-selections | grep hold',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem danh sách package bị giữ nguyên phiên bản',
+            hint: 'dpkg --get-selections | grep hold',
           },
           {
             type: 'exam',
@@ -479,6 +604,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê các file được cài bởi package',
+            hint: 'dpkg -L bash | head -10',
+          },
+          {
             type: 'h2',
             text: 'Key dpkg and APT Directories',
           },
@@ -494,6 +624,11 @@ export const topic102: Topic = {
               ['/etc/apt/sources.list.d/', 'Drop-in repository files (.list format; one per file)'],
               ['/etc/apt/preferences.d/', 'APT pinning preferences files'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem database dpkg',
+            hint: 'ls /var/lib/dpkg/info/ | head -10',
           },
           {
             type: 'code',
@@ -542,6 +677,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê tất cả RPM package',
+            hint: 'rpm -qa | head -10',
+          },
+          {
             type: 'h2',
             text: 'yum / dnf — High-Level Package Tools',
           },
@@ -569,6 +709,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Liệt kê package đã cài (dnf)',
+            hint: 'dnf list installed | head -10',
+          },
+          {
             type: 'h2',
             text: 'zypper — openSUSE / SLES Package Manager',
           },
@@ -586,12 +731,22 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem danh sách repository',
+            hint: 'dnf repolist',
+          },
+          {
             type: 'h2',
             text: 'Repository Configuration (RPM)',
           },
           {
             type: 'code',
             text: '# /etc/yum.repos.d/myrepo.repo\n[myrepo]\nname=My Custom Repository\nbaseurl=http://example.com/repo/\nenabled=1\ngpgcheck=1\ngpgkey=http://example.com/repo/RPM-GPG-KEY',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem thư mục repo',
+            hint: 'ls /etc/yum.repos.d/',
           },
           {
             type: 'exam',
@@ -624,6 +779,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xác minh package rpm',
+            hint: 'rpm -V bash',
+          },
+          {
             type: 'code',
             text: '# Verify a single installed package\nrpm -V sshd\n# S.5....T.  c  /etc/ssh/sshd_config   (size+checksum+timestamp differ; c=config file)\n\n# Verify ALL installed packages (slow — can take minutes)\nrpm -Va\n\n# Additional query options:\nrpm -qd bash           # list documentation files in package\nrpm -qc sshd           # list configuration files managed by package\nrpm -q --changelog bash | head -20  # show package changelog',
           },
@@ -634,6 +794,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# Extract all files from an RPM (does NOT install)\nrpm2cpio package.rpm | cpio -idmv\n# -i = extract  -d = create directories  -m = preserve mtime  -v = verbose\n\n# List contents of an RPM without extracting\nrpm2cpio package.rpm | cpio -t\n\n# Extract only a specific file (path relative to / with leading dot)\nrpm2cpio bash-5.1.rpm | cpio -id "./bin/bash"\n\n# Useful for recovery: replace a broken system binary\nrpm2cpio coreutils-*.rpm | cpio -id "./usr/bin/ls"',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem lịch sử giao dịch dnf',
+            hint: 'dnf history | head -10',
           },
           {
             type: 'h2',
@@ -654,6 +819,11 @@ export const topic102: Topic = {
               ['dnf repolist all', 'List both enabled and disabled repositories'],
               ['dnf config-manager --enable <repo>', 'Enable a disabled repository'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem chi tiết giao dịch dnf',
+            hint: 'dnf history',
           },
           {
             type: 'files',
@@ -684,12 +854,22 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Phát hiện loại ảo hóa',
+            hint: 'systemd-detect-virt',
+          },
+          {
             type: 'h2',
             text: 'Detecting Virtualization',
           },
           {
             type: 'code',
             text: '# Detect if running inside a VM\nsystemd-detect-virt\n\n# Check DMI data for hypervisor info\ndmidecode -t system | grep -i product\n\n# Check /proc/cpuinfo flags\ngrep -i hypervisor /proc/cpuinfo\n\n# Check dmesg for hypervisor messages\ndmesg | grep -i virt',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra flag hypervisor trong CPU',
+            hint: 'grep -i hypervisor /proc/cpuinfo',
           },
           {
             type: 'h2',
@@ -702,6 +882,11 @@ export const topic102: Topic = {
           {
             type: 'code',
             text: '# AWS/OpenStack instance metadata\ncurl http://169.254.169.254/latest/meta-data/\ncurl http://169.254.169.254/latest/meta-data/instance-id\ncurl http://169.254.169.254/latest/meta-data/public-ipv4\n\n# cloud-init logs\njournalctl -u cloud-init\ncat /var/log/cloud-init.log',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem log cloud-init',
+            hint: 'journalctl -u cloud-init | tail -20',
           },
           {
             type: 'h2',
@@ -721,6 +906,11 @@ export const topic102: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra container hay VM',
+            hint: 'ls /.dockerenv 2>/dev/null && echo "Docker container" || systemd-detect-virt',
+          },
+          {
             type: 'h2',
             text: 'Detecting the Virtualization Environment',
           },
@@ -735,6 +925,11 @@ export const topic102: Topic = {
               ['dmesg | grep -i virt', 'Boot messages often reference hypervisor or paravirt drivers'],
               ['ls /.dockerenv', 'This file exists inside Docker containers'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem thông tin sản phẩm DMI',
+            hint: 'dmidecode -t system | grep -i product',
           },
           {
             type: 'h2',

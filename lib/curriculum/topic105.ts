@@ -34,6 +34,11 @@ export const topic105: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem file khởi động shell',
+            hint: 'cat ~/.bashrc | head -20',
+          },
+          {
             type: 'info',
             title: 'Login vs Non-Login Shell',
             body: 'Login shell: when you log in via console, SSH, or su -. Reads /etc/profile then ~/.bash_profile. Non-login shell: new terminal in GUI, running bash in a script, or su (without -). Reads /etc/bashrc then ~/.bashrc. ~/.bash_profile usually sources ~/.bashrc to get both.',
@@ -67,6 +72,11 @@ export const topic105: Topic = {
             text: '# Set and export a variable\nexport MYVAR="hello"\nexport PATH="$PATH:/opt/myapp/bin"\n\n# View all environment variables\nenv\nprintenv\nprintenv PATH\n\n# Unset a variable\nunset MYVAR\n\n# Make variable read-only\nreadonly CONST=42\n\n# Show/set shell options\nset -o           # list all options with on/off state\nset -o noclobber # prevent > from overwriting files\nset +o noclobber # disable that option\nset -x           # debug: print each command before executing\nset -e           # exit script on any error\nset -u           # treat unset variables as errors',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem biến môi trường',
+            hint: 'printenv | sort | head -20',
+          },
+          {
             type: 'h2',
             text: 'Aliases and Functions',
           },
@@ -75,12 +85,22 @@ export const topic105: Topic = {
             text: '# Define an alias\nalias ll="ls -lah"\nalias grep="grep --color=auto"\nalias rm="rm -i"   # safer rm\n\n# List all aliases\nalias\n\n# Remove an alias\nunalias ll\n\n# Aliases are NOT exported to subshells\n# Put alias definitions in ~/.bashrc or ~/.bash_aliases\n\n# Shell function (more powerful than alias — accepts args)\ngreet() {\n    echo "Hello, $1!"\n    echo "You passed $# arguments"\n}\ngreet World     # output: Hello, World!\n\n# Export a function to subshells\nexport -f greet\n\n# List all defined functions\ndeclare -F          # function names only\ndeclare -f greet    # function definition',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem danh sách alias hiệu lực',
+            hint: 'alias',
+          },
+          {
             type: 'h2',
             text: 'source and . (dot) Command',
           },
           {
             type: 'code',
             text: '# Source a file: execute it in the CURRENT shell (not a subshell)\n# Changes to variables/aliases/functions persist in the current shell\nsource ~/.bashrc\n. ~/.bashrc         # identical (. is the POSIX form)\n\n# Compare: running a script directly creates a subshell\nbash myscript.sh    # changes do NOT affect current shell\n./myscript.sh       # same — new subshell\n\n# Typical use: reload profile after editing\nsource ~/.bash_profile',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Load lại cấu hình shell',
+            hint: 'echo $SHELL ; . ~/.bashrc ; echo "Reloaded OK"',
           },
           {
             type: 'exam',
@@ -109,6 +129,11 @@ export const topic105: Topic = {
             text: '#!/bin/bash\n# Shebang line must be first line — specifies the interpreter\n# Make executable: chmod +x script.sh\n# Run: ./script.sh  OR  bash script.sh\n\n# Variables (no spaces around =)\nNAME="Alice"\nAGE=30\necho "Name: $NAME, Age: $AGE"\n\n# Command substitution\nTODAY=$(date +%Y-%m-%d)\nFILES=$(ls /etc | wc -l)\n\n# Arithmetic\nRESULT=$((5 + 3 * 2))     # = 11\nlet COUNT=COUNT+1\n((COUNT++))\n\n# Read user input\nread -p "Enter your name: " USERNAME\nread -s -p "Password: " PASS   # -s = silent (no echo)',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Thực thi bash script nhỏ',
+            hint: 'bash -c \'TODAY=$(date +%Y-%m-%d); echo "Today: $TODAY; Files in /etc: $(ls /etc | wc -l)"\'',
+          },
+          {
             type: 'h2',
             text: 'Special Variables',
           },
@@ -129,6 +154,11 @@ export const topic105: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem biến đặc biệt của shell',
+            hint: 'echo "Shell PID: $$" ; echo "Last exit: $?" ; echo "Shell: $SHELL"',
+          },
+          {
             type: 'h2',
             text: 'Test and Conditionals',
           },
@@ -145,6 +175,11 @@ export const topic105: Topic = {
             text: '# for loop — iterate over list\nfor FRUIT in apple banana cherry; do\n    echo "Fruit: $FRUIT"\ndone\n\n# for loop — iterate over files\nfor FILE in /etc/*.conf; do\n    echo "Config: $FILE"\ndone\n\n# for loop — C-style\nfor ((i=0; i<5; i++)); do\n    echo "i = $i"\ndone\n\n# while loop\nCOUNT=0\nwhile [ $COUNT -lt 5 ]; do\n    echo "Count: $COUNT"\n    ((COUNT++))\ndone\n\n# until loop (opposite of while)\nuntil [ $COUNT -ge 5 ]; do\n    ((COUNT++))\ndone\n\n# Loop control\nbreak       # exit loop\ncontinue    # skip to next iteration\n\n# Read file line by line\nwhile IFS= read -r LINE; do\n    echo "$LINE"\ndone < /etc/hosts',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Sử dụng vòng lặp for',
+            hint: 'for f in /etc/*.conf; do echo "$f"; done | head -10',
+          },
+          {
             type: 'h2',
             text: 'Exit Codes and Error Handling',
           },
@@ -153,12 +188,22 @@ export const topic105: Topic = {
             text: '# Every command returns an exit code: 0=success, 1-255=error\nls /etc\necho $?    # 0\n\nls /nonexistent\necho $?    # 2 (No such file)\n\n# Exit from script with code\nexit 0     # success\nexit 1     # generic error\n\n# Conditional execution using exit codes\ncommand && echo "succeeded"   # run if command succeeded\ncommand || echo "failed"      # run if command failed\ncommand1 && command2 || command3  # if1 then2 else3\n\n# set -e: exit script immediately on any error\n#!/bin/bash\nset -e\nset -u    # treat unset vars as error\nset -o pipefail  # fail if any pipe command fails\n\n# trap: run cleanup on exit or signals\ntrap "rm -f /tmp/lockfile; exit" INT TERM EXIT\ntrap "echo Script interrupted" INT',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra exit code',
+            hint: 'ls /etc/passwd ; echo "Exit: $?" ; ls /nonexistent 2>/dev/null ; echo "Exit: $?"',
+          },
+          {
             type: 'h2',
             text: 'Functions',
           },
           {
             type: 'code',
             text: '# Define function\nmy_func() {\n    local VAR="local scope"   # local: only visible inside function\n    echo "Arg 1: $1"\n    return 0    # return sets $? (0-255 only; not a value)\n}\n\n# Call function\nmy_func "hello"\n\n# Capture function output\nRESULT=$(my_func "hello")\n\n# here-document\ncat << EOF\nLine 1\nLine 2\nEOF\n\n# here-string\ngrep "root" <<< "root:x:0:0"',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Sử dụng here-document',
+            hint: 'cat << EOF\nLinux LPI\nBash scripting\nEOF',
           },
           {
             type: 'exam',
@@ -195,8 +240,18 @@ export const topic105: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra SQLite trong hệ thống',
+            hint: 'sqlite3 --version 2>/dev/null || echo "SQLite not installed"',
+          },
+          {
             type: 'code',
             text: '-- SELECT: query data\nSELECT * FROM users;                          -- all columns, all rows\nSELECT name, email FROM users;                -- specific columns\nSELECT * FROM users WHERE age > 30;           -- filter rows\nSELECT * FROM users WHERE name = \'Alice\';     -- exact match\nSELECT * FROM users ORDER BY name ASC;        -- sort ascending\nSELECT * FROM users ORDER BY age DESC;        -- sort descending\nSELECT * FROM users LIMIT 10;                 -- first 10 rows\nSELECT COUNT(*) FROM users;                   -- count rows\nSELECT MAX(age), MIN(age), AVG(age) FROM users;\n\n-- INSERT: add a row\nINSERT INTO users (name, email, age) VALUES (\'Bob\', \'bob@example.com\', 25);\n\n-- UPDATE: modify rows\nUPDATE users SET email = \'new@example.com\' WHERE name = \'Alice\';\nUPDATE users SET age = age + 1 WHERE active = 1;\n\n-- DELETE: remove rows\nDELETE FROM users WHERE age < 18;\nDELETE FROM users WHERE name = \'Bob\';\n\n-- CREATE TABLE\nCREATE TABLE users (\n    id   INTEGER PRIMARY KEY,\n    name VARCHAR(100) NOT NULL,\n    email TEXT UNIQUE,\n    age  INTEGER\n);\n\n-- DROP TABLE\nDROP TABLE IF EXISTS old_table;',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: SQL CRUD với SQLite',
+            hint: 'sqlite3 /tmp/demo.db "CREATE TABLE IF NOT EXISTS users(id INTEGER, name TEXT); INSERT INTO users VALUES(1,\'alice\'); SELECT * FROM users;"',
           },
           {
             type: 'h2',
@@ -207,12 +262,22 @@ export const topic105: Topic = {
             text: '-- INNER JOIN: matching rows in both tables\nSELECT orders.id, users.name\nFROM orders\nINNER JOIN users ON orders.user_id = users.id;\n\n-- LEFT JOIN: all rows from left table\nSELECT users.name, orders.id\nFROM users\nLEFT JOIN orders ON users.id = orders.user_id;\n\n-- GROUP BY with aggregate\nSELECT department, COUNT(*) AS headcount, AVG(salary)\nFROM employees\nGROUP BY department\nHAVING COUNT(*) > 5;\n\n-- LIKE pattern matching\nSELECT * FROM users WHERE email LIKE \'%@example.com\';\nSELECT * FROM users WHERE name LIKE \'A%\';   -- starts with A\nSELECT * FROM users WHERE name LIKE \'_ob\';  -- _ matches one char',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: JOIN và GROUP BY với SQLite',
+            hint: 'sqlite3 /tmp/demo.db "SELECT name FROM users ORDER BY name;" 2>/dev/null || echo "Run SQL basics example first"',
+          },
+          {
             type: 'h2',
             text: 'Using SQLite and MySQL from the Command Line',
           },
           {
             type: 'code',
             text: '# SQLite — single-file database\nsqlite3 mydb.sqlite           # open or create\nsqlite3 mydb.sqlite "SELECT * FROM users;"\n.help                         # list SQLite commands\n.tables                       # list tables\n.schema users                 # show CREATE TABLE statement\n.quit                         # exit\n\n# MySQL / MariaDB\nmysql -u root -p              # interactive session\nmysql -u user -p dbname -e "SELECT * FROM users;"\n\n-- Inside MySQL:\nSHOW DATABASES;\nUSE mydatabase;\nSHOW TABLES;\nDESCRIBE users;               -- show table structure\nEXIT;',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Chạy SQLite từ dòng lệnh',
+            hint: 'sqlite3 --version 2>/dev/null && echo "SQLite available" || echo "SQLite not installed"',
           },
           {
             type: 'exam',

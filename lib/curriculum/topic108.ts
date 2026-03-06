@@ -46,12 +46,22 @@ export const topic108: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem giờ hệ thống và hardware clock',
+            hint: 'date ; hwclock --show 2>/dev/null || echo "hwclock requires root"',
+          },
+          {
             type: 'h2',
             text: 'timedatectl — systemd Time Management',
           },
           {
             type: 'code',
             text: '# Show full time/date/timezone status\ntimedatectl\n\n# Set system time\ntimedatectl set-time "2026-03-06 14:30:00"\n\n# Set timezone\ntimedatectl set-timezone Europe/London\ntimedatectl list-timezones\n\n# Enable NTP synchronisation\ntimedatectl set-ntp true\ntimedatectl set-ntp false\n\n# Sample output:\n#                Local time: Fri 2026-03-06 14:30:00 GMT\n#            Universal time: Fri 2026-03-06 14:30:00 UTC\n#                  RTC time: Fri 2026-03-06 14:29:58\n#                 Time zone: Europe/London (GMT, +0000)\n# System clock synchronized: yes\n#               NTP service: active',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem trạng thái đồng bộ NTP',
+            hint: 'timedatectl status',
           },
           {
             type: 'h2',
@@ -68,6 +78,11 @@ export const topic108: Topic = {
               ['chronyc tracking', 'Show chrony synchronisation statistics'],
               ['chronyc sources', 'List NTP sources chrony is using'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra đồng bộ NTP',
+            hint: 'timedatectl show 2>/dev/null | grep -E "NTP|Sync" || timedatectl status | grep -E "NTP|sync"',
           },
           {
             type: 'code',
@@ -112,6 +127,11 @@ export const topic108: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem log hệ thống gần nhất',
+            hint: 'tail -20 /var/log/syslog 2>/dev/null || tail -20 /var/log/messages 2>/dev/null || journalctl -n 20 --no-pager',
+          },
+          {
             type: 'table',
             headers: ['Priority (Severity)', 'Code', 'Description'],
             rows: [
@@ -124,6 +144,11 @@ export const topic108: Topic = {
               ['info', '6', 'Informational messages'],
               ['debug', '7', 'Debug-level messages'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem rsyslog config',
+            hint: 'head -30 /etc/rsyslog.conf 2>/dev/null || echo "rsyslog not configured"',
           },
           {
             type: 'h2',
@@ -157,12 +182,22 @@ export const topic108: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem lịch sử đăng nhập',
+            hint: 'last | head -15',
+          },
+          {
             type: 'h2',
             text: 'systemd Journal (journalctl)',
           },
           {
             type: 'code',
             text: '# Show all journal entries (newest last)\njournalctl\n\n# Follow live (like tail -f)\njournalctl -f\n\n# Show entries for current boot\njournalctl -b\n\n# Show entries for previous boot\njournalctl -b -1\n\n# Filter by priority (err and above)\njournalctl -p err\njournalctl -p warning\n\n# Filter by systemd unit\njournalctl -u sshd\njournalctl -u nginx --since "1 hour ago"\n\n# Filter by time range\njournalctl --since "2026-03-06 08:00" --until "2026-03-06 12:00"\njournalctl --since yesterday\n\n# Show kernel messages only\njournalctl -k\n\n# Disk space used by journal\njournalctl --disk-usage\n\n# Vacuum journal (keep last 2 weeks)\njournalctl --vacuum-time=2weeks\njournalctl --vacuum-size=500M',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem journal từ lần khởi động hiện tại',
+            hint: 'journalctl -b --no-pager | tail -20',
           },
           {
             type: 'h2',
@@ -173,6 +208,11 @@ export const topic108: Topic = {
             text: '# /etc/systemd/journald.conf\n[Journal]\nStorage=auto          # auto(default), persistent, volatile, none\n# auto: persistent if /var/log/journal/ exists, else volatile\n# persistent: always save to /var/log/journal/\n# volatile: RAM only (/run/log/journal/)\n# none: disable journal\n\nCompress=yes          # compress journal files\nSystemMaxUse=500M     # max disk space for system journal\nMaxFileSec=1month     # max age of individual journal files\n\n# Storage locations:\n# Persistent: /var/log/journal/\n# Volatile:   /run/log/journal/\n\n# Restart after config change:\nsystemctl restart systemd-journald',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem dung lượng journal',
+            hint: 'journalctl --disk-usage',
+          },
+          {
             type: 'h2',
             text: 'logrotate — Log File Rotation',
           },
@@ -181,12 +221,22 @@ export const topic108: Topic = {
             text: '# logrotate runs daily via cron: /etc/cron.daily/logrotate\n# Global config: /etc/logrotate.conf\n# Per-service configs: /etc/logrotate.d/\n\n# Example /etc/logrotate.d/nginx:\n/var/log/nginx/*.log {\n    daily               # rotate every day\n    missingok           # do not error if log file is missing\n    rotate 14           # keep 14 rotated files\n    compress            # gzip old log files\n    delaycompress       # compress after 1 rotation (keeps last uncompressed)\n    notifempty          # do not rotate if log is empty\n    create 0640 www-data adm   # create new log with these perms\n    postrotate\n        nginx -s reopen  # signal nginx to reopen its log files after rotate\n    endscript\n}\n\n# Test logrotate without actually rotating:\nlogrotate -d /etc/logrotate.d/nginx\n\n# Force rotate now (even if not due):\nlogrotate -f /etc/logrotate.conf',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình logrotate',
+            hint: 'ls /etc/logrotate.d/ ; head -20 /etc/logrotate.conf',
+          },
+          {
             type: 'h2',
             text: 'logger — Write to Syslog',
           },
           {
             type: 'code',
             text: '# logger writes a message to the system syslog\nlogger "This is a test message"\nlogger -p user.warning "Disk space is low"\nlogger -p kern.crit "Kernel panic imminent"\n\n# -p facility.priority\n# -t tag: prepend a tag to the message\nlogger -t myapp -p local0.info "Application started"\n\n# -s: also print to stderr\nlogger -s "This shows on screen and goes to syslog"\n\n# Useful in scripts:\n#!/bin/bash\nlogger -t backup_script "Backup started"\ntar czf /backup/etc.tar.gz /etc\nlogger -t backup_script "Backup complete: $?"',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Gửi log message với logger',
+            hint: 'logger -t lpi_test "Practice message from LPI course" ; journalctl -t lpi_test --no-pager -n 3',
           },
           {
             type: 'h2',
@@ -199,6 +249,11 @@ export const topic108: Topic = {
           {
             type: 'code',
             text: '# /etc/syslog-ng/syslog-ng.conf structure:\nsource s_sys {\n    system();          # collect all system log sources\n    internal();        # syslog-ng internal messages\n};\n\nfilter f_auth { facility(auth, authpriv); };\nfilter f_err  { level(err .. emerg); };\n\ndestination d_auth { file("/var/log/auth.log"); };\ndestination d_syslog { file("/var/log/syslog"); };\ndestination d_remote { network("192.168.1.10" port(514)); };\n\nlog { source(s_sys); filter(f_auth); destination(d_auth); };\nlog { source(s_sys); filter(f_err);  destination(d_syslog); };\n\n# Reload syslog-ng:\nsystemctl reload syslog-ng',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem log xác thực',
+            hint: 'tail -20 /var/log/auth.log 2>/dev/null || journalctl _SYSTEMD_UNIT=sshd.service --no-pager -n 10 2>/dev/null',
           },
           {
             type: 'exam',
@@ -271,12 +326,22 @@ export const topic108: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem mail queue',
+            hint: 'mailq 2>/dev/null || echo "No MTA installed or queue empty"',
+          },
+          {
             type: 'h2',
             text: 'Command-line Mail Sending',
           },
           {
             type: 'code',
             text: '# Send mail from command line\necho "Message body" | mail -s "Subject" user@example.com\nmail -s "Alert" root < /tmp/report.txt\n\n# mutt: powerful TUI mail client\nmutt -s "Subject" user@example.com < body.txt\n\n# /etc/aliases — redirect local mail\n# Format: alias: destination\nroot: admin@example.com\nwebmaster: alice\npostmaster: root\n# After editing:\nnewaliases\n\n# ~/.forward — per-user mail forwarding\necho "alice@gmail.com" > ~/.forward\n\n# Mailbox locations\n/var/mail/username       # mbox format (default)\n/var/spool/mail/username # alternative path\n~/Maildir/               # Maildir format (one file per message)',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem mailbox và biến MAIL',
+            hint: 'echo "Mail spool: $MAIL" ; ls /var/mail/ 2>/dev/null | head -5 ; ls /var/spool/mail/ 2>/dev/null | head -5',
           },
           {
             type: 'exam',
@@ -317,6 +382,11 @@ export const topic108: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra trạng thái CUPS',
+            hint: 'lpstat -t 2>/dev/null || echo "CUPS not running or not installed"',
+          },
+          {
             type: 'h2',
             text: 'Print Commands',
           },
@@ -345,8 +415,18 @@ export const topic108: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem máy in và hàng đợi in',
+            hint: 'lpstat -d 2>/dev/null ; lpq 2>/dev/null ; echo "Default printer: $PRINTER"',
+          },
+          {
             type: 'code',
             text: '# Print a PDF file\nlpr -P HP_LaserJet document.pdf\n\n# Show default printer\nlpstat -d\n# system default destination: HP_LaserJet\n\n# Show all printers\nlpstat -p\n\n# Show full status\nlpstat -t\n\n# List available printer names\nlpstat -a\n\n# Cancel all jobs (as root)\nlprm -P HP_LaserJet -\n\n# Environment variable to set default printer\nexport PRINTER=HP_LaserJet\nexport LPDEST=HP_LaserJet   # older apps use LPDEST\n\n# CUPS web interface:\n# http://localhost:631',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra máy in có sẵn',
+            hint: 'lpstat -a 2>/dev/null || echo "No printers available" ; lpstat -s 2>/dev/null',
           },
           {
             type: 'exam',
