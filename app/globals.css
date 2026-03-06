@@ -50,6 +50,7 @@
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
+    scrollbar-color: #404244 #2c2e31;
   }
   .scrollbar-thumb-sub::-webkit-scrollbar-thumb {
     background-color: #404244;
@@ -60,7 +61,7 @@
     height: 4px;
   }
   .scrollbar-track-transparent::-webkit-scrollbar-track {
-    background: transparent;
+    background: #2c2e31;
   }
 }
 
