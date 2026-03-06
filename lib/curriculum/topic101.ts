@@ -318,6 +318,11 @@ export const topic101: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem quá trình boot',
+            hint: 'systemd-analyze ; cat /proc/cmdline',
+          },
+          {
             type: 'h2',
             text: 'BIOS vs UEFI',
           },
@@ -331,6 +336,11 @@ export const topic101: Topic = {
               ['Secure Boot', 'Not supported', 'Supported'],
               ['64-bit mode', 'Limited', 'Native 64-bit'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Kiểm tra BIOS hay UEFI',
+            hint: 'ls /sys/firmware/efi 2>/dev/null && echo "UEFI" || echo "BIOS/Legacy"',
           },
           {
             type: 'h2',
@@ -352,6 +362,11 @@ export const topic101: Topic = {
               ['grub-install /dev/sda', 'Install GRUB2 to MBR of /dev/sda'],
               ['update-grub', 'Shorthand for grub-mkconfig (Debian)'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem cấu hình GRUB',
+            hint: 'cat /etc/default/grub ; ls /etc/grub.d/ 2>/dev/null',
           },
           {
             type: 'h2',
@@ -376,6 +391,11 @@ export const topic101: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem kernel boot messages',
+            hint: 'dmesg -T | tail -20',
+          },
+          {
             type: 'h2',
             text: 'Boot Log Files',
           },
@@ -391,6 +411,11 @@ export const topic101: Topic = {
               ['journalctl -b', 'Full systemd journal from current boot'],
               ['journalctl -b -1', 'Full systemd journal from previous boot'],
             ],
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem log file hệ thống',
+            hint: 'journalctl -b --no-pager | tail -20',
           },
           {
             type: 'h2',
@@ -412,6 +437,11 @@ export const topic101: Topic = {
             ],
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xác định init system đang dùng',
+            hint: 'ps -p 1 -o comm= ; ls -la /sbin/init 2>/dev/null',
+          },
+          {
             type: 'h2',
             text: 'initrd and initramfs',
           },
@@ -422,6 +452,11 @@ export const topic101: Topic = {
           {
             type: 'code',
             text: '# List initramfs contents\nlsinitrd /boot/initramfs-$(uname -r).img | head -30\n\n# or on Debian:\nunmkinitramfs /boot/initrd.img-$(uname -r) /tmp/initrd-inspect\n\n# dmesg shows which modules are loaded during early boot\ndmesg | grep "initrd"',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Xem initramfs',
+            hint: 'ls /boot/initrd* /boot/initramfs* 2>/dev/null ; uname -r',
           },
           {
             type: 'h2',
@@ -454,6 +489,11 @@ export const topic101: Topic = {
             text: '# View the kernel parameters used for this boot\ncat /proc/cmdline\n\n# GRUB2: temporarily edit kernel parameters at boot\n# 1. At GRUB menu, press "e" to edit the selected entry\n# 2. Find the line starting with linux\n# 3. Append or change parameters at the end\n# 4. Press Ctrl+X or F10 to boot with changes\n\n# Permanently add kernel parameter via /etc/default/grub:\nGRUB_CMDLINE_LINUX_DEFAULT="quiet splash nomodeset"\n# Then regenerate: update-grub',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem kernel parameters',
+            hint: 'cat /proc/cmdline',
+          },
+          {
             type: 'h2',
             text: 'SysRq Keys — Emergency Kernel Interface',
           },
@@ -481,6 +521,11 @@ export const topic101: Topic = {
             text: '# Enable SysRq (may be disabled in hardened kernels)\necho 1 > /proc/sys/kernel/sysrq\n\n# Trigger sync via sysrq-trigger\necho s > /proc/sysrq-trigger\n\n# Emergency reboot when completely frozen (the REISUB trick):\n# Alt+SysRq+r, e, i, s, u, b\n# (Raise Elephants Is So Utterly Boring)\n# r=unraw keyboard, e=terminate, i=kill, s=sync, u=unmount, b=reboot',
           },
           {
+            type: 'practice',
+            title: 'Thực hành: Xem trạng thái SysRq',
+            hint: 'cat /proc/sys/kernel/sysrq',
+          },
+          {
             type: 'h2',
             text: 'systemd-analyze — Boot Performance',
           },
@@ -498,6 +543,11 @@ export const topic101: Topic = {
           {
             type: 'code',
             text: '# Show total boot time\nsystemd-analyze\n# Startup finished in 1.2s (firmware) + 0.5s (loader) + 2.1s (kernel) + 8.4s (userspace)\n\n# Find the 10 slowest services\nsystemd-analyze blame | head -10\n\n# Show critical dependency chain\nsystemd-analyze critical-chain graphical.target',
+          },
+          {
+            type: 'practice',
+            title: 'Thực hành: Phân tích hiệu suất boot',
+            hint: 'systemd-analyze blame 2>/dev/null | head -10',
           },
           {
             type: 'exam',
