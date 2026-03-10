@@ -4,7 +4,8 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, X, FileText, BookOpen } from 'lucide-react'
 import { getAllLessons, topics } from '@/lib/curriculum'
-import type { Lesson, SectionType } from '@/lib/types'
+import type { Lesson } from '@/lib/types'
+import { extractSectionText } from '@/lib/searchUtils'
 
 interface SearchModalProps {
   open: boolean
@@ -16,20 +17,6 @@ interface SearchResult {
   score: number
   matchContext: string   // snippet showing where the match was found
   matchField: 'id' | 'title' | 'description' | 'topic' | 'content'
-}
-
-// Extract plain text from all searchable sections
-function extractSectionText(sections: SectionType[]): string {
-  return sections
-    .flatMap(s => {
-      if (s.type === 'h2' || s.type === 'h3' || s.type === 'p' || s.type === 'code') return [s.text]
-      if (s.type === 'tip' || s.type === 'warning' || s.type === 'info' || s.type === 'exam')
-        return [s.title, s.body]
-      if (s.type === 'list' || s.type === 'olist') return s.items
-      if (s.type === 'table') return [...s.headers, ...s.rows.flat()]
-      return []
-    })
-    .join(' ')
 }
 
 // Simple fuzzy: returns true if all chars of pattern appear in order in str

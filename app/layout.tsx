@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import TopBar from '@/components/TopBar'
+import ChatWidget from '@/components/ChatWidget'
 import { SettingsProvider } from '@/lib/settingsContext'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -56,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body style={{ background: '#323437', color: '#d1d0c5', minHeight: '100vh', display: 'flex' }}>
+      <body suppressHydrationWarning style={{ background: '#323437', color: '#d1d0c5', minHeight: '100vh', display: 'flex' }}>
       <SettingsProvider>
         {/* Mobile overlay */}
         {mobileOpen && (
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
         </div>
+        <ChatWidget />
       </SettingsProvider>
       </body>
     </html>
